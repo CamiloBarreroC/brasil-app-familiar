@@ -3,26 +3,35 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 
 # Configuración de página
-st.set_page_config(page_title="Brasil 2026 - Familia", page_icon="🇧🇷", layout="wide")
+st.set_page_config(page_title="Viaje Familiar - Brasil", page_icon="🇧🇷", layout="wide")
 
 # Conexión a Google Sheets
-conn = st.connection("gsheets", type=GSheetsConnection)
+try:
+    conn = st.connection("gsheets", type=GSheetsConnection)
+except Exception:
+    st.error("Error de conexión. Revisa los Secrets en Streamlit Cloud.")
 
-# --- ESTILOS ---
+# --- ESTILOS PERSONALIZADOS ---
 st.markdown("""
     <style>
     .main { background-color: #f8f9fa; }
-    .stButton>button { width: 100%; border-radius: 5px; height: 3em; background-color: #009c3b; color: white; }
+    .stButton>button { 
+        width: 100%; border-radius: 10px; height: 3.5em; 
+        background-color: #009c3b; color: white; font-weight: bold;
+    }
+    .stButton>button:hover { background-color: #ffdf00; color: #002776; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("🇧🇷 Expedición Brasil 2026")
+# --- TÍTULO PERSONALIZADO ---
+st.markdown("<h1 style='text-align: center; color: #002776;'>🇧🇷 ¡Nuestra Gran Aventura en Brasil! 🇧🇷</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #009c3b;'>Un viaje inolvidable para Mati, el abuelito y toda la familia</h3>", unsafe_allow_html=True)
 st.write("---")
 
-# --- SIDEBAR: CONVERSOR ---
-st.sidebar.header("💰 Configuración Económica")
-trm_usd = st.sidebar.number_input("TRM (1 USD -> COP)", value=3950)
-trm_brl = st.sidebar.number_input("TRM (1 BRL -> COP)", value=780)
+# --- SIDEBAR: CONFIGURACIÓN ---
+st.sidebar.header("⚙️ Configuración")
+trm_usd = st.sidebar.number_input("Tasa Dólar (USD -> COP)", value=3950)
+trm_brl = st.sidebar.number_input("Tasa Real (BRL -> COP)", value=780)
 ver_en = st.sidebar.radio("Ver precios en:", ["COP", "USD", "BRL"])
 
 def formatear(valor_usd):
@@ -30,65 +39,64 @@ def formatear(valor_usd):
     if ver_en == "BRL": return f"R$ {(valor_usd * trm_usd)/trm_brl:,.2f}"
     return f"$ {valor_usd:,.2f} USD"
 
-# --- PESTAÑAS PRINCIPALES ---
-tab1, tab2, tab3 = st.tabs(["🗺️ Itinerario", "⚽ Ruta Futbolera", "💰 Cotizador Pro"])
+# --- PESTAÑAS ---
+tab1, tab2, tab3 = st.tabs(["🗺️ Itinerario", "⚽ Ruta de Mati y el abuelito", "💰 Cotizador Pro"])
 
 with tab1:
     st.header("Nuestro Recorrido Circular")
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.image("https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200", caption="Río de Janeiro nos espera para el 31")
-    with col2:
-        st.write("**Paradas Clave:**")
-        st.write("📍 **SP / Santos:** Inicio y Museos.")
-        st.write("📍 **Paraty:** 2 días de relax total.")
-        st.write("📍 **Río:** 4 días (Reveillon y Maracanã).")
-        st.write("📍 **Salvador:** 3 días de cultura y Bahía.")
-        st.write("📍 **BH / Minas:** El regreso con mejor comida.")
+    col_img, col_txt = st.columns([2, 1])
+    with col_img:
+        # Foto de Arraial do Cabo
+        st.image("http://googleusercontent.com/image_collection/image_retrieval/9629654463243462635_0", caption="¡Brasil nos espera en familia!", use_container_width=True)
+    with col_txt:
+        st.subheader("Paradas Principales")
+        st.write("📍 **Santos:** La casa de Pelé.")
+        st.write("📍 **Paraty:** Historia y barcos.")
+        st.write("📍 **Río:** Año Nuevo épico.")
+        st.write("📍 **Salvador:** El corazón de Bahía.")
+        st.write("📍 **Belo Horizonte:** Comida y estadios.")
 
 with tab2:
-    st.header("👟 Ruta de los Templos (Para Papá, Hijo y Yo)")
+    st.header("👟 Los Templos del Fútbol para Mati y el abuelito")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.image("https://images.unsplash.com/photo-1622279457486-62dcc4a4bd13?w=400")
-        st.subheader("Museo Pacaembú (SP)")
+        # Foto Museo del Fútbol
+        st.image("http://googleusercontent.com/image_collection/image_retrieval/18355643073997025256_0", caption="Museo del Fútbol (SP)", use_container_width=True)
+        st.write("**Para Mati:** Juegos interactivos.")
+        st.write("**Para el abuelito:** La historia de los mundiales.")
     with c2:
-        st.image("https://images.unsplash.com/photo-1540744158912-d859067c8fc3?w=400")
-        st.subheader("Maracanã (Río)")
+        # Foto Maracanã
+        st.image("http://googleusercontent.com/image_collection/image_retrieval/17768215703529535617_0", caption="Estadio Maracanã (Río)", use_container_width=True)
+        st.write("¡El lugar perfecto para una foto de los dos en el borde de la cancha!")
     with c3:
-        st.image("https://images.unsplash.com/photo-1599341457639-968600d80e7d?w=400")
-        st.subheader("Vila Belmiro (Santos)")
+        # Foto Vila Belmiro
+        st.image("http://googleusercontent.com/image_collection/image_retrieval/14102648363937343475_0", caption="Vila Belmiro (Santos)", use_container_width=True)
+        st.write("Donde nació la magia de Pelé. Un momento sagrado para compartir.")
 
 with tab3:
     st.header("📝 Registro de Cotizaciones")
-    
-    # Formulario para guardar en Google Sheets
-    with st.form("nuevo_gasto"):
-        c_item, c_cat, c_val = st.columns(3)
-        item = c_item.text_input("¿Qué cotizaste?")
-        cat = c_cat.selectbox("Categoría", ["Hospedaje", "Vuelos", "Fútbol", "Comida", "Otros"])
-        precio = c_val.number_input("Precio en USD", min_value=0.0)
-        btn_guardar = st.form_submit_button("Guardar en el Excel")
-        
-        if btn_guardar:
+    with st.form("nuevo_gasto", clear_on_submit=True):
+        f1, f2, f3 = st.columns(3)
+        item = f1.text_input("¿Qué cotizaste?")
+        cat = f2.selectbox("Categoría", ["Hospedaje", "Transporte", "Fútbol", "Comida", "Otros"])
+        precio = f3.number_input("Precio en USD", min_value=0.0)
+        if st.form_submit_button("Guardar en el Excel"):
             if item:
-                # AQUÍ SE ESCRIBE EN EL SHEET (Pestaña 'Cotizaciones')
                 nuevo_dato = pd.DataFrame([{"Item": item, "Categoría": cat, "USD": precio}])
                 try:
                     conn.create(data=nuevo_dato, worksheet="Cotizaciones")
-                    st.success(f"¡{item} guardado!")
-                except:
-                    st.warning("Guardado local (conecta bien la pestaña 'Cotizaciones' en tu Sheet)")
-            else:
-                st.error("Ponle un nombre a la cotización")
-
+                    st.success(f"¡{item} guardado para el presupuesto familiar!")
+                    st.cache_data.clear() # Limpia caché para ver el nuevo dato
+                except Exception as e: 
+                    st.error(f"Error al guardar: {e}")
+    
     st.write("---")
-    st.subheader("📊 Resumen de Gastos Acumulados")
-    # Intentar leer datos guardados
     try:
-        df_existente = conn.read(worksheet="Cotizaciones")
-        st.dataframe(df_existente, use_container_width=True)
-        total_acumulado = df_existente["USD"].sum()
-        st.metric("Presupuesto Total", formatear(total_acumulado))
-    except:
-        st.info("Aún no hay cotizaciones guardadas en la pestaña 'Cotizaciones'.")
+        df = conn.read(worksheet="Cotizaciones", ttl="0s") # Lee sin caché para ver cambios al instante
+        if not df.empty:
+            st.dataframe(df, use_container_width=True)
+            st.metric("Total Proyectado", formatear(df["USD"].sum()))
+        else:
+            st.info("Registra tu primera cotización para ver el resumen.")
+    except: 
+        st.info("Asegúrate de que la pestaña 'Cotizaciones' exista en tu Google Sheet.")
