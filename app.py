@@ -3,21 +3,18 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import requests
 
-# 1. Configuración de la página
+# 1. Configuración de página
 st.set_page_config(page_title="Misión Brasil 2026", page_icon="🇧🇷", layout="wide")
 
-# --- FUNCIÓN PARA BUSCAR PRECIOS DEL DÍA (API REAL) ---
+# --- TASAS DE CAMBIO EN VIVO ---
 def obtener_tasas():
     try:
-        # Buscamos la tasa USD -> COP y USD -> BRL
         response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
         data = response.json()
         usd_cop = data['rates']['COP']
         usd_brl = data['rates']['BRL']
-        brl_cop = usd_cop / usd_brl
-        return usd_cop, brl_cop
+        return usd_cop, usd_cop / usd_brl
     except:
-        # Si falla la API, dejamos unos valores de respaldo
         return 3950.0, 780.0
 
 usd_hoy, brl_hoy = obtener_tasas()
@@ -25,7 +22,7 @@ usd_hoy, brl_hoy = obtener_tasas()
 # 2. Conexión a Google Sheets
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-# --- ESTILOS VISUALES ---
+# --- ESTILOS VISUALES (CONTRASTE ALTO) ---
 st.markdown("""
     <style>
     .main { background-color: #f4f7f6; }
@@ -35,27 +32,26 @@ st.markdown("""
         border-radius: 10px 10px 0 0;
     }
     .stTabs [data-baseweb="tab"] {
-        color: #ffffff !important;
+        color: white !important; /* Letras blancas siempre */
         font-weight: bold;
     }
     .stTabs [aria-selected="true"] {
         background-color: #009c3b !important;
+        color: white !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # --- ENCABEZADO ---
 st.markdown("<h1 style='text-align: center; color: #002776;'>🚀 Misión Brasil 2026: Nuestra Aventura Inolvidable</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #555; font-size: 1.2em;'>Un plan para toda la familia con unos detallitos para Mati y el abuelito</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #555; font-size: 1.1em;'>Un plan para toda la familia con unos detallitos para Mati y el abuelito</p>", unsafe_allow_html=True)
 st.write("---")
 
-# --- SIDEBAR (CON PRECIOS EN VIVO) ---
-st.sidebar.header("📈 Tasas de Cambio en Vivo")
-st.sidebar.write(f"**1 USD:** ${usd_hoy:,.2f} COP")
-st.sidebar.write(f"**1 BRL:** ${brl_hoy:,.2f} COP")
-st.sidebar.info("Precios actualizados automáticamente vía API.")
-
-moneda = st.sidebar.radio("Mostrar presupuesto en:", ["COP", "USD", "BRL"])
+# --- SIDEBAR ---
+st.sidebar.header("📈 Tasas del Día")
+st.sidebar.write(f"**Dólar:** ${usd_hoy:,.2f} COP")
+st.sidebar.write(f"**Real:** ${brl_hoy:,.2f} COP")
+moneda = st.sidebar.radio("Ver presupuesto en:", ["COP", "USD", "BRL"])
 
 def format_money(usd_val):
     if moneda == "COP": return f"$ {usd_val * usd_hoy:,.0f} COP"
@@ -63,63 +59,66 @@ def format_money(usd_val):
     return f"$ {usd_val:,.2f} USD"
 
 # --- PESTAÑAS ---
-tab1, tab2, tab3 = st.tabs(["🗺️ ITINERARIO", "⚽ ESTADIOS", "💰 COTIZACIONES"])
+tab1, tab2, tab3 = st.tabs(["🗺️ ITINERARIO DETALLADO", "⚽ MATI Y EL ABUELITO", "💰 COTIZACIONES"])
 
 with tab1:
-    st.header("📅 Cronograma del Viaje")
+    st.header("📅 Cronograma de Ruta (4,200 km aprox.)")
     
-    # Itinerario organizado por filas
-    it_df = pd.DataFrame([
-        {"Fecha": "26 - 27 Dic", "Destino": "São Paulo / Santos", "Plan": "Llegada, Museos y visita a la casa de Pelé."},
-        {"Fecha": "28 Dic", "Destino": "Paraty", "Plan": "Pueblo colonial, barquitos y descanso."},
-        {"Fecha": "29 - 31 Dic", "Destino": "Río de Janeiro", "Plan": "Año Nuevo en la playa y visita al Maracanã."},
-        {"Fecha": "01 - 02 Ene", "Destino": "Arraial do Cabo", "Plan": "Caribe brasileño: aguas cristalinas y sol."},
-        {"Fecha": "03 - 06 Ene", "Destino": "Salvador de Bahía", "Plan": "Cultura, música y comida bahiana."},
-        {"Fecha": "07 - 11 Ene", "Destino": "Regreso", "Plan": "Chapada Diamantina, Minas Gerais y vuelta a SP."}
-    ])
+    # Tabla detallada con tiempos de manejo
+    it_data = [
+        {"Fecha": "26 Dic", "Ruta": "Sao Paulo ➔ Santos", "Manejo": "1.5 h", "Hospedaje": "Santos", "Plan": "Llegada, entrega de carro y descanso frente al mar."},
+        {"Fecha": "27 Dic", "Ruta": "Santos ➔ Paraty", "Manejo": "4.5 h", "Hospedaje": "Paraty", "Plan": "Visita a Vila Belmiro (Mati/Abuelo) y ruta costera."},
+        {"Fecha": "28 Dic", "Ruta": "Paraty", "Manejo": "---", "Hospedaje": "Paraty", "Plan": "Día de barco por las islas y centro histórico."},
+        {"Fecha": "29 Dic", "Ruta": "Paraty ➔ Río", "Manejo": "4 h", "Hospedaje": "Río", "Plan": "Llegada a Río y tarde en Copacabana."},
+        {"Fecha": "30-31 Dic", "Ruta": "Río de Janeiro", "Manejo": "---", "Hospedaje": "Río", "Plan": "Año Nuevo (Reveillon) y Tour Maracaná."},
+        {"Fecha": "01-02 Ene", "Ruta": "Río ➔ Arraial", "Manejo": "3 h", "Hospedaje": "Arraial", "Plan": "Descanso en el 'Caribe Brasileño'."},
+        {"Fecha": "03-05 Ene", "Ruta": "Arraial ➔ Salvador", "Manejo": "Dividido", "Hospedaje": "Salvador", "Plan": "Subida por la costa hacia el Pelourinho."},
+        {"Fecha": "06 Ene", "Ruta": "Salvador", "Manejo": "---", "Hospedaje": "Salvador", "Plan": "Cultura afro-brasileña y Mercado Modelo."},
+        {"Fecha": "07-08 Ene", "Ruta": "Salvador ➔ Chapada", "Manejo": "6 h", "Hospedaje": "Lençóis", "Plan": "Aventura en cascadas y cuevas (Chapada Diamantina)."},
+        {"Fecha": "09 Ene", "Ruta": "Chapada ➔ M. Claros", "Manejo": "8 h", "Hospedaje": "M. Claros", "Plan": "Tramo largo de regreso cruzando el interior."},
+        {"Fecha": "10 Ene", "Ruta": "M. Claros ➔ Belo H.", "Manejo": "6 h", "Hospedaje": "Belo H.", "Plan": "Comida minera y visita al Mineirão."},
+        {"Fecha": "11 Ene", "Ruta": "Belo H. ➔ Sao Paulo", "Manejo": "7 h", "Hospedaje": "---", "Plan": "Regreso, entrega de carro y vuelo a casa."}
+    ]
+    st.table(pd.DataFrame(it_data))
     
-    st.table(it_df)
-    st.image("https://images.unsplash.com/photo-1518107616985-bd48230d3b20?q=80&w=1200", caption="¡Prepárense para el verano brasileño!")
+    # Imagen desde tu GitHub (Asegúrate de subir una foto a la carpeta img/rio.jpg)
+    # Por ahora dejo un link de respaldo más robusto
+    st.image("https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=1200", caption="Vista de Río desde el Pan de Azúcar")
 
 with tab2:
-    st.header("🏟️ Ruta de los Templos")
-    st.write("Fotos exclusivas de los lugares que visitarán Mati y el abuelito.")
+    st.header("🏟️ Ruta de los Templos: Mati y el abuelito")
+    st.info("Estos son los 3 estadios que visitaremos en el viaje.")
     
     c1, c2, c3 = st.columns(3)
+    # Estos links son de Wikipedia, suelen fallar menos que los de Unsplash
     with c1:
-        st.image("https://images.unsplash.com/photo-1619551730161-12f567840134?q=80&w=500", caption="El imponente Maracanã (Río)")
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Est%C3%A1dio_do_Maracan%C3%A3_-_Rio_de_Janeiro.jpg/640px-Est%C3%A1dio_do_Maracan%C3%A3_-_Rio_de_Janeiro.jpg", caption="Maracanã (Río)")
     with c2:
-        st.image("https://images.unsplash.com/photo-1529900214229-1b606e391e1d?q=80&w=500", caption="Museo del Fútbol (Pacaembú)")
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Est%C3%A1dio_do_Pacaembu_2014.jpg/640px-Est%C3%A1dio_do_Pacaembu_2014.jpg", caption="Museo del Fútbol (SP)")
     with c3:
-        st.image("https://images.unsplash.com/photo-1599341457639-968600d80e7d?q=80&w=500", caption="Vila Belmiro (Santos)")
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Est%C3%A1dio_Urbano_Caldeira_%28Vila_Belmiro%29_-_Santos_FC.jpg/640px-Est%C3%A1dio_Urbano_Caldeira_%28Vila_Belmiro%29_-_Santos_FC.jpg", caption="Vila Belmiro (Santos)")
 
 with tab3:
-    st.header("📝 Cotizaciones Guardadas")
-    
+    st.header("📝 Cotizaciones del Plan")
     try:
-        df_gastos = conn.read(worksheet="Cotizaciones", ttl=0)
+        df_g = conn.read(worksheet="Cotizaciones", ttl=0)
     except:
-        df_gastos = pd.DataFrame(columns=["Item", "Categoría", "USD", "Notas"])
+        df_g = pd.DataFrame(columns=["Item", "Categoría", "USD", "Notas"])
 
     with st.form("nuevo_gasto", clear_on_submit=True):
-        col_a, col_b = st.columns(2)
-        item = col_a.text_input("¿Qué estamos cotizando?")
-        cat = col_b.selectbox("Categoría", ["Vuelos", "Hospedaje", "Comida", "Fútbol", "Otros"])
-        precio = col_a.number_input("Precio en USD", min_value=0.0)
-        notas = col_b.text_input("Notas adicionales")
-        
-        if st.form_submit_button("Guardar en el Plan"):
+        c_a, c_b = st.columns(2)
+        item = c_a.text_input("Concepto")
+        cat = c_b.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Entradas"])
+        precio = c_a.number_input("Valor en USD", min_value=0.0)
+        notas = c_b.text_input("Notas")
+        if st.form_submit_button("Guardar Cotización"):
             if item:
                 new_row = pd.DataFrame([{"Item": item, "Categoría": cat, "USD": precio, "Notas": notas}])
-                updated_df = pd.concat([df_gastos, new_row], ignore_index=True)
-                conn.update(worksheet="Cotizaciones", data=updated_df)
-                st.success("¡Cotización guardada!")
+                conn.update(worksheet="Cotizaciones", data=pd.concat([df_g, new_row], ignore_index=True))
+                st.success("¡Guardado!")
                 st.cache_data.clear()
-            else:
-                st.error("Ponle un nombre a la cotización.")
 
     st.write("---")
-    if not df_gastos.empty:
-        st.dataframe(df_gastos, use_container_width=True)
-        total_acumulado = df_gastos["USD"].sum()
-        st.metric("Total Estimado", format_money(total_acumulado))
+    if not df_g.empty:
+        st.dataframe(df_g, use_container_width=True)
+        st.metric("Total Estimado", format_money(df_g["USD"].sum()))
