@@ -6,7 +6,7 @@ import requests
 # 1. Configuración de la página
 st.set_page_config(page_title="Misión Brasil 2026", page_icon="🇧🇷", layout="wide")
 
-# --- FUNCIÓN: TASAS DE CAMBIO ---
+# --- FUNCIÓN: TASAS DE CAMBIO (API REAL EN VIVO) ---
 @st.cache_data(ttl=3600)
 def obtener_tasas():
     try:
@@ -23,7 +23,7 @@ usd_hoy, brl_hoy = obtener_tasas()
 # 2. Conexión a Google Sheets
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-# --- ESTILOS MODO OSCURO PRO ---
+# --- ESTILOS MODO OSCURO PRO (BRASIL GOLD) ---
 st.markdown(f"""
     <style>
     .stApp {{ background-color: #0e1117; }}
@@ -81,21 +81,21 @@ with tab1:
         horizontal=True
     )
     
-    # --- LÓGICA DE RUTAS ---
+    # --- REDACCIÓN CON ALMA ---
     if horario_vuelo == "Llegada en la Mañana":
         h_1, h_2 = "Santos", "Paraty"
-        p_1 = "Aterrizaje en SP, historia en el Museo del Fútbol y descanso en los jardines de Santos frente al mar."
-        p_2 = "Vila Belmiro (Santos) y ruta escénica por la costa hacia Paraty. Almuerzo en el camino."
+        p_1 = "Aterrizaje en el pulso de São Paulo y peregrinación al Museo del Fútbol. Tras la cita con la historia, nos desplazamos hacia la costa para dejarnos abrazar por la brisa de Santos y caminar sin prisa por sus jardines infinitos, ese balcón de flores que parece no tener fin frente al mar."
+        p_2 = "Encuentro sagrado con el legado de Pelé en Vila Belmiro. Con el alma inspirada, iniciamos el tramo inicial de la mítica Rio-Santos buscando la magia colonial de Paraty."
     else:
         h_1, h_2 = "São Paulo", "Santos"
-        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el vuelo largo."
-        p_2 = "Museo del Fútbol (SP), viaje a la costa y tarde sagrada en Vila Belmiro."
+        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el cruce del continente."
+        p_2 = "Mañana de historia en el Museo del Fútbol (SP), viaje a la costa para ver el atardecer en los jardines de Santos y tarde sagrada en Vila Belmiro."
 
     it_data = [
         {"Fecha": "26 Dic", "Ruta": "El Inicio", "Hospedaje": h_1, "Plan": p_1},
         {"Fecha": "27 Dic", "Ruta": "Hacia la Magia", "Hospedaje": h_2, "Plan": p_2},
         {"Fecha": "28 Dic", "Ruta": "Piedra e Historia", "Hospedaje": "Paraty", "Plan": "Mañana: Caminata por el Centro Histórico colonial. Tarde: Ruta de cascadas y selva en la montaña."},
-        {"Fecha": "29 Dic", "Ruta": "Ruta del Oro", "Hospedaje": "Río", "Plan": "Carretera Rio-Santos: selva, mar y el primer atardecer de postal en Copacabana."},
+        {"Fecha": "29 Dic", "Ruta": "Destino: Río", "Hospedaje": "Río", "Plan": "Tramo final de la mítica Rio-Santos bordeando la Costa Verde y Angra. Entrada triunfal a Río para el atardecer en Copacabana."},
         {"Fecha": "30-31 Dic", "Ruta": "Ciudad Maravillosa", "Hospedaje": "Río", "Plan": "Reveillón: El alma de Río en Año Nuevo y el latido del fútbol en el Maracanã."},
         {"Fecha": "01-02 Ene", "Ruta": "Caribe Brasileño", "Hospedaje": "Arraial", "Plan": "Inmersión total en el azul infinito de las Prainhas do Pontal."},
         {"Fecha": "03-05 Ene", "Ruta": "Expedición Norte", "Hospedaje": "Varios", "Plan": "Ruta panorámica por la costa descubriendo playas salvajes hacia Salvador."},
@@ -107,7 +107,7 @@ with tab1:
     ]
     st.table(pd.DataFrame(it_data))
 
-# --- PESTAÑAS 2 Y 3 (Sin cambios para mantener el diseño) ---
+# --- PESTAÑAS 2 Y 3 (Sin cambios) ---
 with tab2:
     st.header("🏟️ Ruta de los Templos")
     f1c1, f1c2 = st.columns(2)
