@@ -64,54 +64,50 @@ def format_money(usd_val):
     return f"$ {usd_val:,.2f} USD"
 
 # --- PESTAÑAS ---
-tab1, tab2, tab3 = st.tabs(["🗺️ ITINERARIO FLEXIBLE", "⚽ MATI Y EL ABUELITO", "💰 COTIZACIONES"])
+tab1, tab2, tab3 = st.tabs(["🗺️ ITINERARIO DE AVENTURA", "⚽ MATI Y EL ABUELITO", "💰 COTIZACIONES"])
 
 with tab1:
     col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
     with col_img2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡Brasil en familia!", width=500)
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡El viaje de nuestras vidas!", width=500)
     
-    st.header("📅 Cronograma Detallado")
+    st.header("📅 Nuestra Ruta Paso a Paso")
     
     st.markdown("### ✈️ Configuración de Llegada")
     horario_vuelo = st.radio(
-        "¿A qué hora llega el vuelo a São Paulo?",
+        "¿A qué hora aterrizamos en São Paulo?",
         ["Llegada en la Mañana", "Llegada en la Tarde/Noche"],
         index=0,
         horizontal=True
     )
     
-    # --- LOGICA DE HOSPEDAJES Y PLANES ACLARADA ---
+    # --- LÓGICA ROMÁNTICA Y CONCISA ---
     if horario_vuelo == "Llegada en la Mañana":
-        st.success("✅ Opción A: Museo en São Paulo el Día 1")
-        hospedaje_1 = "Santos"
-        hospedaje_2 = "Paraty"
-        plan_1 = "Llegada a São Paulo, visita al Museo del Fútbol (Pacaembú). Viaje a Santos al final de la tarde."
-        plan_2 = "Mañana en Vila Belmiro (Santos). Inicio de ruta costera hacia Paraty."
+        h_1, h_2 = "Santos", "Paraty"
+        p_1 = "Aterrizaje en SP, inmersión en la historia en el Museo del Fútbol y descenso por la selva hacia el mar de Santos."
+        p_2 = "Encuentro con el Rey Pelé en Vila Belmiro y ruta escénica hacia la joya colonial de Paraty."
     else:
-        st.warning("🌙 Opción B: Museo en São Paulo el Día 2")
-        hospedaje_1 = "São Paulo"
-        hospedaje_2 = "Santos"
-        plan_1 = "Traslado al hotel en São Paulo y descanso total tras el vuelo largo."
-        plan_2 = "Mañana: Museo del Fútbol (São Paulo). Tarde: Viaje a Santos y visita a Vila Belmiro."
+        h_1, h_2 = "São Paulo", "Santos"
+        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el cruce del continente."
+        p_2 = "Mañana de historia en el Museo del Fútbol (SP), viaje a la costa y tarde sagrada en Vila Belmiro."
 
     it_data = [
-        {"Fecha": "26 Dic", "Ruta": "Aeropuerto ➔ Hotel", "Hospedaje": hospedaje_1, "Plan": plan_1},
-        {"Fecha": "27 Dic", "Ruta": "Sao Paulo ➔ Santos", "Hospedaje": hospedaje_2, "Plan": plan_2},
-        {"Fecha": "28 Dic", "Ruta": "Paraty", "Hospedaje": "Paraty", "Plan": "Día de lancha privada por las islas y bahía de Paraty."},
-        {"Fecha": "29 Dic", "Ruta": "Paraty ➔ Río", "Hospedaje": "Río", "Plan": "Ruta panorámica Rio-Santos y atardecer en Copacabana."},
-        {"Fecha": "30-31 Dic", "Ruta": "Río de Janeiro", "Hospedaje": "Río", "Plan": "Año Nuevo (Reveillon) y Tour por el Estadio Maracaná."},
-        {"Fecha": "01-02 Ene", "Ruta": "Río ➔ Arraial", "Hospedaje": "Arraial", "Plan": "Disfrutar de las Prainhas do Pontal y relax total."},
-        {"Fecha": "03-05 Ene", "Ruta": "Subida por Costa", "Hospedaje": "Varios", "Plan": "Recorrido hacia el norte con paradas estratégicas en playas."},
-        {"Fecha": "06 Ene", "Ruta": "Salvador", "Hospedaje": "Salvador", "Plan": "Día cultural recorriendo el Pelourinho y el Mercado Modelo."},
-        {"Fecha": "07-08 Ene", "Ruta": "Salvador ➔ Chapada", "Hospedaje": "Lençóis", "Plan": "Aventura natural y cascadas en Chapada Diamantina."},
-        {"Fecha": "09 Ene", "Ruta": "Regreso Interior", "Hospedaje": "M. Claros", "Plan": "Tramo largo de carretera por el interior de Minas Gerais."},
-        {"Fecha": "10 Ene", "Ruta": "M. Claros ➔ Belo H.", "Hospedaje": "Belo H.", "Plan": "Visita al Mineirão (el del 1-7) y cena de comida minera."},
-        {"Fecha": "11 Ene", "Ruta": "Vuelta a SP", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega de auto y vuelo a casa."}
+        {"Fecha": "26 Dic", "Ruta": "El Inicio", "Hospedaje": h_1, "Plan": p_1},
+        {"Fecha": "27 Dic", "Ruta": "Hacia la Magia", "Hospedaje": h_2, "Plan": p_2},
+        {"Fecha": "28 Dic", "Ruta": "Islas de Cristal", "Hospedaje": "Paraty", "Plan": "Navegación privada por las islas y aguas turquesas de la bahía de Paraty."},
+        {"Fecha": "29 Dic", "Ruta": "Ruta del Oro", "Hospedaje": "Río", "Plan": "Carretera Rio-Santos: selva, mar y el primer atardecer de postal en Copacabana."},
+        {"Fecha": "30-31 Dic", "Ruta": "Ciudad Maravillosa", "Hospedaje": "Río", "Plan": "Reveillón: El alma de Río en Año Nuevo y el latido del fútbol en el Maracanã."},
+        {"Fecha": "01-02 Ene", "Ruta": "Caribe Brasileño", "Hospedaje": "Arraial", "Plan": "Inmersión total en el azul infinito de las Prainhas do Pontal."},
+        {"Fecha": "03-05 Ene", "Ruta": "Expedición Norte", "Hospedaje": "Varios", "Plan": "Ruta panorámica por la costa descubriendo playas salvajes hacia Salvador."},
+        {"Fecha": "06 Ene", "Ruta": "Corazón de Bahía", "Hospedaje": "Salvador", "Plan": "Tambores, historia y herencia cultural en las calles del Pelourinho."},
+        {"Fecha": "07-08 Ene", "Ruta": "Tierra de Gigantes", "Hospedaje": "Lençóis", "Plan": "Aventura en las entrañas de la Chapada Diamantina: cuevas, cascadas y selva."},
+        {"Fecha": "09 Ene", "Ruta": "Interior Profundo", "Hospedaje": "M. Claros", "Plan": "Travesía por el corazón de Minas Gerais, cruzando horizontes infinitos."},
+        {"Fecha": "10 Ene", "Ruta": "Legado Minero", "Hospedaje": "Belo H.", "Plan": "El recuerdo del Mineirão (1-7) y la reconfortante cena de sabores mineros."},
+        {"Fecha": "11 Ene", "Ruta": "Cierre de Ciclo", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega del auto y último adiós a tierras brasileñas."}
     ]
     st.table(pd.DataFrame(it_data))
 
-# ... (El resto del código de Pestañas 2 y 3 se mantiene igual para no tocar el diseño perfecto)
+# --- LAS PESTAÑAS 2 Y 3 SE MANTIEEN EXACTAMENTE IGUALES ---
 with tab2:
     st.header("🏟️ Ruta de los Templos")
     f1c1, f1c2 = st.columns(2)
