@@ -35,15 +35,15 @@ st.markdown(f"""
     .stTable, [data-testid="stTable"] {{ background-color: #1a1c24; color: white !important; border-radius: 10px; }}
     [data-testid="stTable"] td, [data-testid="stTable"] th {{ color: white !important; border-bottom: 1px solid #31333f; }}
     section[data-testid="stSidebar"] {{ background-color: #000b1a; }}
-    .stButton>button {{ background-color: #009c3b; color: white; border-radius: 10px; border: none; font-weight: bold; width: 100%; }}
+    .stButton>button {{ background-color: #009c3b; color: white; border-radius: 10px; border: none; font-weight: bold; width: 100%; height: 3em; }}
     
-    /* Estilo para los inputs de conversión */
-    .conversion-box {{
+    /* Caja de entrada de datos */
+    .input-container {{
         background-color: #1a1c24;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #ffdf00;
-        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid #009c3b;
+        margin-bottom: 25px;
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -53,9 +53,9 @@ st.markdown("<h1>🚀 MISIÓN BRASIL 2026</h1>", unsafe_allow_html=True)
 st.write("---")
 
 # --- SIDEBAR ---
-st.sidebar.header("💰 Tasas de Cambio Hoy")
-st.sidebar.metric("1 Dólar (USD)", f"${usd_hoy:,.0f} COP")
-st.sidebar.metric("1 Real (BRL)", f"${brl_hoy:,.0f} COP")
+st.sidebar.header("💰 Tasas de Cambio")
+st.sidebar.metric("Dólar (USD)", f"${usd_hoy:,.0f} COP")
+st.sidebar.metric("Real (BRL)", f"${brl_hoy:,.0f} COP")
 st.sidebar.write("---")
 moneda_v = st.sidebar.radio("Ver presupuesto en:", ["COP", "USD", "BRL"])
 
@@ -71,10 +71,9 @@ with tab1:
     col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
     with col_img2:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡Brasil en familia!", width=500)
-    
     st.header("📅 Cronograma de Ruta")
     it_data = [
-        {"Fecha": "26 Dic", "Ruta": "Sao Paulo ➔ Santos", "Hospedaje": "Santos", "Plan": "Llegada y cena frente al mar."},
+        {"Fecha": "26 Dic", "Ruta": "Sao Paulo ➔ Santos", "Hospedaje": "Santos", "Plan": "Llegada y cena."},
         {"Fecha": "27 Dic", "Ruta": "Santos ➔ Paraty", "Hospedaje": "Paraty", "Plan": "Vila Belmiro y ruta costera."},
         {"Fecha": "28 Dic", "Ruta": "Paraty", "Hospedaje": "Paraty", "Plan": "Lancha por las islas."},
         {"Fecha": "29 Dic", "Ruta": "Paraty ➔ Río", "Hospedaje": "Río", "Plan": "Atardecer en Copacabana."},
@@ -84,8 +83,8 @@ with tab1:
         {"Fecha": "06 Ene", "Ruta": "Salvador", "Hospedaje": "Salvador", "Plan": "Pelourinho."},
         {"Fecha": "07-08 Ene", "Ruta": "Salvador ➔ Chapada", "Hospedaje": "Lençóis", "Plan": "Chapada Diamantina."},
         {"Fecha": "09 Ene", "Ruta": "Regreso Interior", "Hospedaje": "M. Claros", "Plan": "Tramo largo."},
-        {"Fecha": "10 Ene", "Ruta": "M. Claros ➔ Belo H.", "Hospedaje": "Belo H.", "Plan": "Mineirão (¡El del 1-7!)."},
-        {"Fecha": "11 Ene", "Ruta": "Vuelta a SP", "Hospedaje": "---", "Plan": "Regreso a casa."}
+        {"Fecha": "10 Ene", "Ruta": "M. Claros ➔ Belo H.", "Hospedaje": "Belo H.", "Plan": "Mineirão (7-1)."},
+        {"Fecha": "11 Ene", "Ruta": "Vuelta a SP", "Hospedaje": "---", "Plan": "Regreso."}
     ]
     st.table(pd.DataFrame(it_data))
 
@@ -102,61 +101,72 @@ with tab2:
 with tab3:
     st.header("📝 Gestión de Presupuesto")
     
-    # 1. Lógica de Conversión Dinámica
+    # --- LOGICA DE SINCRONIZACION ---
     if 'usd_input' not in st.session_state: st.session_state.usd_input = 0.0
     if 'cop_input' not in st.session_state: st.session_state.cop_input = 0.0
 
-    def update_usd():
+    def sync_to_usd():
         st.session_state.usd_input = st.session_state.cop_input / usd_hoy
 
-    def update_cop():
+    def sync_to_cop():
         st.session_state.cop_input = st.session_state.usd_input * usd_hoy
 
-    st.subheader("💰 Calculadora de Cotización")
+    # --- FORMULARIO UNIFICADO ---
+    st.subheader("➕ Agregar Nueva Cotización")
+    
     with st.container():
-        st.markdown('<div class="conversion-box">', unsafe_allow_html=True)
-        col_c1, col_c2, col_c3 = st.columns(3)
+        st.markdown('<div class="input-container">', unsafe_allow_html=True)
         
-        with col_c1:
-            cop_val = st.number_input("Precio en Pesos (COP)", min_value=0.0, key="cop_input", on_change=update_usd, step=50000.0)
-        
-        with col_c2:
-            usd_val = st.number_input("Precio en Dólares (USD)", min_value=0.0, key="usd_input", on_change=update_cop, step=10.0)
-        
-        with col_c3:
-            # Cálculo de Reales solo para visualización
-            brl_val = (st.session_state.usd_input * usd_hoy) / brl_hoy
-            st.metric("Equivale en Reales", f"R$ {brl_val:,.2f}")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # 2. Formulario para guardar
-    try:
-        df_g = conn.read(worksheet="Cotizaciones", ttl=0)
-    except:
-        df_g = pd.DataFrame(columns=["Item", "Categoría", "USD", "Notas"])
-
-    with st.form("nuevo_gasto", clear_on_submit=True):
+        # Fila 1: Datos básicos
         col_f1, col_f2 = st.columns(2)
-        item_n = col_f1.text_input("¿Qué estás cotizando? (Ej: Hotel en Paraty)")
-        cat_n = col_f2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Entradas"])
-        not_n = st.text_input("Notas adicionales (Ej: 'Visto en Booking')")
+        nombre_item = col_f1.text_input("¿Qué estás cotizando?", placeholder="Ej: Hotel en Río")
+        categoria = col_f2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Entradas"])
         
-        enviar = st.form_submit_button("Guardar Cotización en el Plan")
+        # Fila 2: Precios Sincronizados
+        st.write("**Ingresa el precio en la moneda que tengas:**")
+        col_p1, col_p2, col_p3 = st.columns(3)
         
-        if enviar:
-            if item_n and st.session_state.usd_input > 0:
-                nueva = pd.DataFrame([{"Item": item_n, "Categoría": cat_n, "USD": st.session_state.usd_input, "Notas": not_n}])
-                conn.update(worksheet="Cotizaciones", data=pd.concat([df_g, nueva], ignore_index=True))
-                st.success(f"¡Guardado! {item_n} por {format_money(st.session_state.usd_input)}")
+        with col_p1:
+            st.number_input("Precio en Pesos (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
+        
+        with col_p2:
+            st.number_input("Precio en Dólares (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
+            
+        with col_p3:
+            brl_ref = (st.session_state.usd_input * usd_hoy) / brl_hoy
+            st.metric("Referencia en Reales", f"R$ {brl_ref:,.2f}")
+            
+        notas = st.text_input("Notas adicionales", placeholder="Ej: Precio visto en Airbnb")
+        
+        # Botón de Guardar
+        if st.button("🚀 GUARDAR ESTA COTIZACIÓN"):
+            if nombre_item and st.session_state.usd_input > 0:
+                try:
+                    df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
+                except:
+                    df_actual = pd.DataFrame(columns=["Item", "Categoría", "USD", "Notas"])
+                
+                nueva_fila = pd.DataFrame([{"Item": nombre_item, "Categoría": categoria, "USD": st.session_state.usd_input, "Notas": notas}])
+                df_final = pd.concat([df_actual, nueva_fila], ignore_index=True)
+                conn.update(worksheet="Cotizaciones", data=df_final)
+                
+                st.success(f"✅ ¡Guardado! {nombre_item} por {format_money(st.session_state.usd_input)}")
                 st.cache_data.clear()
                 st.rerun()
             else:
-                st.error("Por favor ingresa un nombre y un valor mayor a cero.")
+                st.warning("⚠️ Por favor ingresa el nombre del ítem y un valor de precio.")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    # 3. Resumen
-    if not df_g.empty:
-        st.write("---")
-        st.subheader("📋 Cotizaciones Guardadas")
-        st.dataframe(df_g, use_container_width=True)
-        total_usd = df_g["USD"].sum()
-        st.metric("TOTAL ESTIMADO DEL VIAJE", format_money(total_usd))
+    # --- TABLA DE RESULTADOS ---
+    try:
+        df_mostrar = conn.read(worksheet="Cotizaciones", ttl=0)
+        if not df_mostrar.empty:
+            st.write("---")
+            st.subheader("📋 Resumen de Gastos Guardados")
+            st.dataframe(df_mostrar, use_container_width=True)
+            
+            total_usd_viaje = df_mostrar["USD"].sum()
+            st.metric("VALOR TOTAL ESTIMADO", format_money(total_usd_viaje))
+    except:
+        st.info("Aún no hay cotizaciones guardadas.")
