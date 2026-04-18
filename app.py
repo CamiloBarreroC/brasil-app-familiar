@@ -49,6 +49,7 @@ st.markdown(f"""
 
 # --- ENCABEZADO ---
 st.markdown("<h1>🚀 MISIÓN BRASIL 2026</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2em;'>Un plan para toda la familia con unos detallitos para Mati y el abuelito</p>", unsafe_allow_html=True)
 st.write("---")
 
 # --- SIDEBAR ---
@@ -69,7 +70,7 @@ tab1, tab2, tab3 = st.tabs(["🗺️ ITINERARIO DE AVENTURA", "⚽ MATI Y EL ABU
 with tab1:
     col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
     with col_img2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡El viaje de nuestras vidas!", width=500)
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡Río nos espera con los brazos abiertos!", width=500)
     
     st.header("📅 Nuestra Ruta Paso a Paso")
     
@@ -81,33 +82,35 @@ with tab1:
         horizontal=True
     )
     
-    # --- REDACCIÓN CON ALMA ---
+    # Lógica de planes iniciales
     if horario_vuelo == "Llegada en la Mañana":
         h_1, h_2 = "Santos", "Paraty"
-        p_1 = "Aterrizaje en el pulso de São Paulo y peregrinación al Museo del Fútbol. Tras la cita con la historia, nos desplazamos hacia la costa para dejarnos abrazar por la brisa de Santos y caminar sin prisa por sus jardines infinitos, ese balcón de flores que parece no tener fin frente al mar."
-        p_2 = "Encuentro sagrado con el legado de Pelé en Vila Belmiro. Con el alma inspirada, iniciamos el tramo inicial de la mítica Rio-Santos buscando la magia colonial de Paraty."
+        p_1 = "Aterrizaje en SP, historia en el Museo del Fútbol y descanso en los jardines de Santos frente al mar."
+        p_2 = "Encuentro sagrado en Vila Belmiro (Santos) y ruta escénica por la costa hacia Paraty."
     else:
         h_1, h_2 = "São Paulo", "Santos"
-        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el cruce del continente."
-        p_2 = "Mañana de historia en el Museo del Fútbol (SP), viaje a la costa para ver el atardecer en los jardines de Santos y tarde sagrada en Vila Belmiro."
+        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el vuelo largo."
+        p_2 = "Museo del Fútbol (SP), viaje a la costa y tarde sagrada en Vila Belmiro."
 
+    # --- CRONOGRAMA CON DÍA EXTRA EN RÍO ---
     it_data = [
         {"Fecha": "26 Dic", "Ruta": "El Inicio", "Hospedaje": h_1, "Plan": p_1},
         {"Fecha": "27 Dic", "Ruta": "Hacia la Magia", "Hospedaje": h_2, "Plan": p_2},
-        {"Fecha": "28 Dic", "Ruta": "Piedra e Historia", "Hospedaje": "Paraty", "Plan": "Mañana: Caminata por el Centro Histórico colonial. Tarde: Ruta de cascadas y selva en la montaña."},
-        {"Fecha": "29 Dic", "Ruta": "Destino: Río", "Hospedaje": "Río", "Plan": "Tramo final de la mítica Rio-Santos bordeando la Costa Verde y Angra. Entrada triunfal a Río para el atardecer en Copacabana."},
-        {"Fecha": "30-31 Dic", "Ruta": "Ciudad Maravillosa", "Hospedaje": "Río", "Plan": "Reveillón: El alma de Río en Año Nuevo y el latido del fútbol en el Maracanã."},
-        {"Fecha": "01-02 Ene", "Ruta": "Caribe Brasileño", "Hospedaje": "Arraial", "Plan": "Inmersión total en el azul infinito de las Prainhas do Pontal."},
-        {"Fecha": "03-05 Ene", "Ruta": "Expedición Norte", "Hospedaje": "Varios", "Plan": "Ruta panorámica por la costa descubriendo playas salvajes hacia Salvador."},
+        {"Fecha": "28 Dic", "Ruta": "Piedra e Historia", "Hospedaje": "Paraty", "Plan": "Mañana colonial en el Centro Histórico y tarde de cascadas en la selva."},
+        {"Fecha": "29 Dic", "Ruta": "Destino: Río", "Hospedaje": "Río", "Plan": "Tramo final de la Rio-Santos y primer atardecer de postal en Copacabana."},
+        {"Fecha": "30-31 Dic", "Ruta": "Reveillón", "Hospedaje": "Río", "Plan": "Año Nuevo en la playa y visita emocional al Templo del Maracanã."},
+        {"Fecha": "01 Ene", "Ruta": "Río Relax", "Hospedaje": "Río", "Plan": "Primer día del año de descanso total. Caminatas suaves por la rambla de Ipanema."},
+        {"Fecha": "02 Ene", "Ruta": "Río Imperial", "Hospedaje": "Río", "Plan": "Cita sin afán con el Cristo Redentor y el Pan de Azúcar para despedir la ciudad."},
+        {"Fecha": "03 Ene", "Ruta": "Salto al Caribe", "Hospedaje": "Arraial", "Plan": "Viaje corto a Arraial do Cabo (3h). Atardecer mágico en el Pontal do Atalaia."},
+        {"Fecha": "04-05 Ene", "Ruta": "Expedición Norte", "Hospedaje": "Varios", "Plan": "Subida por la costa (Espírito Santo / Bahía) en busca de Salvador."},
         {"Fecha": "06 Ene", "Ruta": "Corazón de Bahía", "Hospedaje": "Salvador", "Plan": "Tambores e historia en las calles mágicas del Pelourinho."},
         {"Fecha": "07-08 Ene", "Ruta": "Tierra de Gigantes", "Hospedaje": "Lençóis", "Plan": "Aventura en la Chapada Diamantina: cuevas, cascadas y selva virgen."},
         {"Fecha": "09 Ene", "Ruta": "Interior Profundo", "Hospedaje": "M. Claros", "Plan": "Travesía por el corazón de Minas Gerais, cruzando horizontes infinitos."},
-        {"Fecha": "10 Ene", "Ruta": "Legado Minero", "Hospedaje": "Belo H.", "Plan": "El recuerdo del Mineirão (1-7) y la reconfortante cena de sabores mineros."},
+        {"Fecha": "10 Ene", "Ruta": "Legado Minero", "Hospedaje": "Belo H.", "Plan": "Recuerdo del Mineirão (1-7) y reconfortante cena de sabores mineros."},
         {"Fecha": "11 Ene", "Ruta": "Cierre de Ciclo", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega del auto y último adiós a Brasil."}
     ]
     st.table(pd.DataFrame(it_data))
 
-# --- PESTAÑAS 2 Y 3 (Sin cambios) ---
 with tab2:
     st.header("🏟️ Ruta de los Templos")
     f1c1, f1c2 = st.columns(2)
