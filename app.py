@@ -6,7 +6,7 @@ import requests
 # 1. Configuración de la página
 st.set_page_config(page_title="Misión Brasil 2026", page_icon="🇧🇷", layout="wide")
 
-# --- FUNCIÓN: TASAS DE CAMBIO (API REAL EN VIVO) ---
+# --- FUNCIÓN: TASAS DE CAMBIO ---
 @st.cache_data(ttl=3600)
 def obtener_tasas():
     try:
@@ -81,15 +81,15 @@ with tab1:
         horizontal=True
     )
     
-    # --- LÓGICA ROMÁNTICA Y CONCISA ---
+    # --- LÓGICA CON DETALLE DE LOS JARDINES ---
     if horario_vuelo == "Llegada en la Mañana":
         h_1, h_2 = "Santos", "Paraty"
-        p_1 = "Aterrizaje en SP, inmersión en la historia en el Museo del Fútbol y descenso por la selva hacia el mar de Santos."
-        p_2 = "Encuentro con el Rey Pelé en Vila Belmiro y ruta escénica hacia la joya colonial de Paraty."
+        p_1 = "Aterrizaje en SP, historia en el Museo del Fútbol y descenso a Santos para caminar por sus jardines frente al mar (los más largos del mundo)."
+        p_2 = "Encuentro con Pelé en Vila Belmiro, último adiós a los jardines de Santos y ruta escénica hacia la joya colonial de Paraty."
     else:
         h_1, h_2 = "São Paulo", "Santos"
         p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el cruce del continente."
-        p_2 = "Mañana de historia en el Museo del Fútbol (SP), viaje a la costa y tarde sagrada en Vila Belmiro."
+        p_2 = "Museo del Fútbol (SP), viaje a la costa para ver el atardecer en los jardines de Santos y tarde sagrada en Vila Belmiro."
 
     it_data = [
         {"Fecha": "26 Dic", "Ruta": "El Inicio", "Hospedaje": h_1, "Plan": p_1},
@@ -99,15 +99,14 @@ with tab1:
         {"Fecha": "30-31 Dic", "Ruta": "Ciudad Maravillosa", "Hospedaje": "Río", "Plan": "Reveillón: El alma de Río en Año Nuevo y el latido del fútbol en el Maracanã."},
         {"Fecha": "01-02 Ene", "Ruta": "Caribe Brasileño", "Hospedaje": "Arraial", "Plan": "Inmersión total en el azul infinito de las Prainhas do Pontal."},
         {"Fecha": "03-05 Ene", "Ruta": "Expedición Norte", "Hospedaje": "Varios", "Plan": "Ruta panorámica por la costa descubriendo playas salvajes hacia Salvador."},
-        {"Fecha": "06 Ene", "Ruta": "Corazón de Bahía", "Hospedaje": "Salvador", "Plan": "Tambores, historia y herencia cultural en las calles del Pelourinho."},
-        {"Fecha": "07-08 Ene", "Ruta": "Tierra de Gigantes", "Hospedaje": "Lençóis", "Plan": "Aventura en las entrañas de la Chapada Diamantina: cuevas, cascadas y selva."},
+        {"Fecha": "06 Ene", "Ruta": "Corazón de Bahía", "Hospedaje": "Salvador", "Plan": "Tambores e historia en las calles mágicas del Pelourinho."},
+        {"Fecha": "07-08 Ene", "Ruta": "Tierra de Gigantes", "Hospedaje": "Lençóis", "Plan": "Aventura en la Chapada Diamantina: cuevas, cascadas y selva virgen."},
         {"Fecha": "09 Ene", "Ruta": "Interior Profundo", "Hospedaje": "M. Claros", "Plan": "Travesía por el corazón de Minas Gerais, cruzando horizontes infinitos."},
         {"Fecha": "10 Ene", "Ruta": "Legado Minero", "Hospedaje": "Belo H.", "Plan": "El recuerdo del Mineirão (1-7) y la reconfortante cena de sabores mineros."},
         {"Fecha": "11 Ene", "Ruta": "Cierre de Ciclo", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega del auto y último adiós a tierras brasileñas."}
     ]
     st.table(pd.DataFrame(it_data))
 
-# --- LAS PESTAÑAS 2 Y 3 SE MANTIEEN EXACTAMENTE IGUALES ---
 with tab2:
     st.header("🏟️ Ruta de los Templos")
     f1c1, f1c2 = st.columns(2)
