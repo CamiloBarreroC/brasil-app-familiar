@@ -73,7 +73,6 @@ with tab1:
     
     st.header("📅 Cronograma Detallado")
     
-    # --- SELECTOR DE OPCIÓN DE VUELO ---
     st.markdown("### ✈️ Configuración de Llegada")
     horario_vuelo = st.radio(
         "¿A qué hora llega el vuelo a São Paulo?",
@@ -82,37 +81,42 @@ with tab1:
         horizontal=True
     )
     
-    # Definición de datos según el horario
+    # --- LOGICA DE HOSPEDAJES Y PLANES ACLARADA ---
     if horario_vuelo == "Llegada en la Mañana":
-        st.success("✅ Opción A: Museo el Día 1")
-        dia_1_plan = "Llegada, almuerzo y visita al Museo del Fútbol (Pacaembú). Viaje a Santos por la tarde."
-        dia_2_plan = "Mañana en Vila Belmiro (Santos). Salida hacia Paraty al mediodía."
+        st.success("✅ Opción A: Museo en São Paulo el Día 1")
+        hospedaje_1 = "Santos"
+        hospedaje_2 = "Paraty"
+        plan_1 = "Llegada a São Paulo, visita al Museo del Fútbol (Pacaembú). Viaje a Santos al final de la tarde."
+        plan_2 = "Mañana en Vila Belmiro (Santos). Inicio de ruta costera hacia Paraty."
     else:
-        st.warning("🌙 Opción B: Descanso y Museo el Día 2")
-        dia_1_plan = "Llegada a São Paulo, traslado al hotel y descanso total de viaje largo."
-        dia_2_plan = "9:00 AM Museo del Fútbol. 12:00 PM Salida a Santos. 3:00 PM Vila Belmiro. Dormir en Santos."
+        st.warning("🌙 Opción B: Museo en São Paulo el Día 2")
+        hospedaje_1 = "São Paulo"
+        hospedaje_2 = "Santos"
+        plan_1 = "Traslado al hotel en São Paulo y descanso total tras el vuelo largo."
+        plan_2 = "Mañana: Museo del Fútbol (São Paulo). Tarde: Viaje a Santos y visita a Vila Belmiro."
 
     it_data = [
-        {"Fecha": "26 Dic", "Ruta": "Sao Paulo ➔ Santos", "Hospedaje": "Santos", "Plan": dia_1_plan},
-        {"Fecha": "27 Dic", "Ruta": "Santos ➔ Paraty", "Hospedaje": "Paraty", "Plan": dia_2_plan},
-        {"Fecha": "28 Dic", "Ruta": "Paraty", "Hospedaje": "Paraty", "Plan": "Día de lancha privada por las islas y bahía."},
-        {"Fecha": "29 Dic", "Ruta": "Paraty ➔ Río", "Hospedaje": "Río", "Plan": "Ruta panorámica y atardecer en Copacabana."},
-        {"Fecha": "30-31 Dic", "Ruta": "Río de Janeiro", "Hospedaje": "Río", "Plan": "Año Nuevo (Reveillon) y Tour Maracaná."},
-        {"Fecha": "01-02 Ene", "Ruta": "Río ➔ Arraial", "Hospedaje": "Arraial", "Plan": "Prainhas do Pontal y relax total."},
-        {"Fecha": "03-05 Ene", "Ruta": "Subida por Costa", "Hospedaje": "Varios", "Plan": "Hacia el norte con paradas en playas."},
-        {"Fecha": "06 Ene", "Ruta": "Salvador", "Hospedaje": "Salvador", "Plan": "Centro histórico (Pelourinho)."},
-        {"Fecha": "07-08 Ene", "Ruta": "Salvador ➔ Chapada", "Hospedaje": "Lençóis", "Plan": "Naturaleza y cascadas en Chapada."},
-        {"Fecha": "09 Ene", "Ruta": "Regreso Interior", "Hospedaje": "M. Claros", "Plan": "Tramo largo de carretera."},
-        {"Fecha": "10 Ene", "Ruta": "M. Claros ➔ Belo H.", "Hospedaje": "Belo H.", "Plan": "Mineirão (¡El del 1-7!) y comida minera."},
-        {"Fecha": "11 Ene", "Ruta": "Vuelta a SP", "Hospedaje": "---", "Plan": "Entrega de auto y vuelo de regreso."}
+        {"Fecha": "26 Dic", "Ruta": "Aeropuerto ➔ Hotel", "Hospedaje": hospedaje_1, "Plan": plan_1},
+        {"Fecha": "27 Dic", "Ruta": "Sao Paulo ➔ Santos", "Hospedaje": hospedaje_2, "Plan": plan_2},
+        {"Fecha": "28 Dic", "Ruta": "Paraty", "Hospedaje": "Paraty", "Plan": "Día de lancha privada por las islas y bahía de Paraty."},
+        {"Fecha": "29 Dic", "Ruta": "Paraty ➔ Río", "Hospedaje": "Río", "Plan": "Ruta panorámica Rio-Santos y atardecer en Copacabana."},
+        {"Fecha": "30-31 Dic", "Ruta": "Río de Janeiro", "Hospedaje": "Río", "Plan": "Año Nuevo (Reveillon) y Tour por el Estadio Maracaná."},
+        {"Fecha": "01-02 Ene", "Ruta": "Río ➔ Arraial", "Hospedaje": "Arraial", "Plan": "Disfrutar de las Prainhas do Pontal y relax total."},
+        {"Fecha": "03-05 Ene", "Ruta": "Subida por Costa", "Hospedaje": "Varios", "Plan": "Recorrido hacia el norte con paradas estratégicas en playas."},
+        {"Fecha": "06 Ene", "Ruta": "Salvador", "Hospedaje": "Salvador", "Plan": "Día cultural recorriendo el Pelourinho y el Mercado Modelo."},
+        {"Fecha": "07-08 Ene", "Ruta": "Salvador ➔ Chapada", "Hospedaje": "Lençóis", "Plan": "Aventura natural y cascadas en Chapada Diamantina."},
+        {"Fecha": "09 Ene", "Ruta": "Regreso Interior", "Hospedaje": "M. Claros", "Plan": "Tramo largo de carretera por el interior de Minas Gerais."},
+        {"Fecha": "10 Ene", "Ruta": "M. Claros ➔ Belo H.", "Hospedaje": "Belo H.", "Plan": "Visita al Mineirão (el del 1-7) y cena de comida minera."},
+        {"Fecha": "11 Ene", "Ruta": "Vuelta a SP", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega de auto y vuelo a casa."}
     ]
     st.table(pd.DataFrame(it_data))
 
+# ... (El resto del código de Pestañas 2 y 3 se mantiene igual para no tocar el diseño perfecto)
 with tab2:
     st.header("🏟️ Ruta de los Templos")
     f1c1, f1c2 = st.columns(2)
     with f1c1: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/maracana.jpg", caption="Maracanã", width=300)
-    with f1c2: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/pacaembu.jpg", caption="Museo Fútbol", width=300)
+    with f1c2: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/pacaembu.jpg", caption="Museo Fútbol (São Paulo)", width=300)
     st.write("---")
     f2c1, f2c2 = st.columns(2)
     with f2c1: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/santos.jpg", caption="Vila Belmiro", width=300)
@@ -120,10 +124,8 @@ with tab2:
 
 with tab3:
     st.header("📝 Gestión de Presupuesto")
-    
     if 'usd_input' not in st.session_state: st.session_state.usd_input = 0.0
     if 'cop_input' not in st.session_state: st.session_state.cop_input = 0.0
-
     def sync_to_usd(): st.session_state.usd_input = st.session_state.cop_input / usd_hoy
     def sync_to_cop(): st.session_state.cop_input = st.session_state.usd_input * usd_hoy
 
