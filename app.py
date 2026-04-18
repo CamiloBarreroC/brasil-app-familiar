@@ -81,20 +81,20 @@ with tab1:
         horizontal=True
     )
     
-    # --- LÓGICA CON DETALLE DE LOS JARDINES ---
+    # --- LÓGICA DE RUTAS ---
     if horario_vuelo == "Llegada en la Mañana":
         h_1, h_2 = "Santos", "Paraty"
-        p_1 = "Aterrizaje en SP, historia en el Museo del Fútbol y descenso a Santos para caminar por sus jardines frente al mar (los más largos del mundo)."
-        p_2 = "Encuentro con Pelé en Vila Belmiro, último adiós a los jardines de Santos y ruta escénica hacia la joya colonial de Paraty."
+        p_1 = "Aterrizaje en SP, historia en el Museo del Fútbol y descanso en los jardines de Santos frente al mar."
+        p_2 = "Vila Belmiro (Santos) y ruta escénica por la costa hacia Paraty. Almuerzo en el camino."
     else:
         h_1, h_2 = "São Paulo", "Santos"
-        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el cruce del continente."
-        p_2 = "Museo del Fútbol (SP), viaje a la costa para ver el atardecer en los jardines de Santos y tarde sagrada en Vila Belmiro."
+        p_1 = "Traslado al hotel en São Paulo y primer brindis de descanso tras el vuelo largo."
+        p_2 = "Museo del Fútbol (SP), viaje a la costa y tarde sagrada en Vila Belmiro."
 
     it_data = [
         {"Fecha": "26 Dic", "Ruta": "El Inicio", "Hospedaje": h_1, "Plan": p_1},
         {"Fecha": "27 Dic", "Ruta": "Hacia la Magia", "Hospedaje": h_2, "Plan": p_2},
-        {"Fecha": "28 Dic", "Ruta": "Islas de Cristal", "Hospedaje": "Paraty", "Plan": "Navegación privada por las islas y aguas turquesas de la bahía de Paraty."},
+        {"Fecha": "28 Dic", "Ruta": "Piedra e Historia", "Hospedaje": "Paraty", "Plan": "Mañana: Caminata por el Centro Histórico colonial. Tarde: Ruta de cascadas y selva en la montaña."},
         {"Fecha": "29 Dic", "Ruta": "Ruta del Oro", "Hospedaje": "Río", "Plan": "Carretera Rio-Santos: selva, mar y el primer atardecer de postal en Copacabana."},
         {"Fecha": "30-31 Dic", "Ruta": "Ciudad Maravillosa", "Hospedaje": "Río", "Plan": "Reveillón: El alma de Río en Año Nuevo y el latido del fútbol en el Maracanã."},
         {"Fecha": "01-02 Ene", "Ruta": "Caribe Brasileño", "Hospedaje": "Arraial", "Plan": "Inmersión total en el azul infinito de las Prainhas do Pontal."},
@@ -103,10 +103,11 @@ with tab1:
         {"Fecha": "07-08 Ene", "Ruta": "Tierra de Gigantes", "Hospedaje": "Lençóis", "Plan": "Aventura en la Chapada Diamantina: cuevas, cascadas y selva virgen."},
         {"Fecha": "09 Ene", "Ruta": "Interior Profundo", "Hospedaje": "M. Claros", "Plan": "Travesía por el corazón de Minas Gerais, cruzando horizontes infinitos."},
         {"Fecha": "10 Ene", "Ruta": "Legado Minero", "Hospedaje": "Belo H.", "Plan": "El recuerdo del Mineirão (1-7) y la reconfortante cena de sabores mineros."},
-        {"Fecha": "11 Ene", "Ruta": "Cierre de Ciclo", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega del auto y último adiós a tierras brasileñas."}
+        {"Fecha": "11 Ene", "Ruta": "Cierre de Ciclo", "Hospedaje": "---", "Plan": "Regreso a São Paulo, entrega del auto y último adiós a Brasil."}
     ]
     st.table(pd.DataFrame(it_data))
 
+# --- PESTAÑAS 2 Y 3 (Sin cambios para mantener el diseño) ---
 with tab2:
     st.header("🏟️ Ruta de los Templos")
     f1c1, f1c2 = st.columns(2)
