@@ -67,7 +67,7 @@ with tab1:
     horario_vuelo = st.radio("¿A qué hora aterrizamos en São Paulo?", ["Mañana", "Tarde/Noche"], index=0, horizontal=True)
     
     if "Mañana" in horario_vuelo:
-        p1 = "⚽ Aterrizaje y visita al MUSEO DEL FÚTBOL (Pacaembú). Cena italiana en Jardins."
+        p1 = "⚽ Aterrizaje y visita al MUSEO DEL FÚTBOL (Pacaembú). Almuerzo en el estadio y cena italiana en Jardins."
         p2 = "🛍️ Compras en Oscar Freire y visita al Mercado Municipal."
     else:
         p1 = "🏨 Llegada al hotel, brindis de bienvenida y descanso del vuelo."
@@ -131,18 +131,19 @@ with tab3:
     st.write("---")
     st.subheader("🐠 Río de Janeiro: Aventuras bajo el Mar")
     st.markdown("Visita al **AquaRio**, el acuario marino más grande de Sudamérica.")
+    # La foto que ya cargaste:
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/aquario_rio.jpg", caption="AquaRio: Túneles de cristal y tiburones.", use_container_width=True)
 
-# --- PESTAÑA: LOS CONSENTIDOS (NUEVA DESCRIPCIÓN, NOMBRE ORIGINAL) ---
+# --- PESTAÑA: LOS CONSENTIDOS (TEXTO ACTUALIZADO PARA CAMBORIÚ DE DÍA) ---
 with tab4:
     st.header("🥂 Los Consentidos: Estilo e Historia")
     st.markdown("### Para Amparo, Jime, Diana y Giorgio")
     
     st.subheader("🏖️ Vida de Playa y Récords")
-    st.markdown("Nuestra base en el sur será Balneário Camboriú. Disfrutaremos del mar de día bajo el imponente skyline.")
+    st.markdown("Nuestra base en el sur será Balneário Camboriú. Disfrutaremos del mar de día bajo el imponente skyline de la 'Dubai brasileña'.")
     
-    # REVERTIDO: Volvemos a playa_camboriu_noche.jpg pero el texto dice "de día"
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_noche.jpg", caption="Balneário Camboriú: El impresionante skyline de la 'Dubai Brasileña'.", use_container_width=True)
+    # Manteniendo el nombre que ya tienes (playa_camboriu_noche.jpg)
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_noche.jpg", caption="Balneário Camboriú: La 'Dubai Brasileña' de día.", use_container_width=True)
     
     col_b1, col_b2 = st.columns(2)
     with col_b1:
@@ -166,7 +167,7 @@ with tab4:
     with col_h4:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="Ouro Preto")
 
-# --- PESTAÑA: PRESUPUESTO INTERACTIVO ---
+# --- PESTAÑA: PRESUPUESTO INTERACTIVO CON RESUMEN ---
 with tab5:
     st.header("💰 Simulador de Presupuesto")
     if 'usd_input' not in st.session_state: st.session_state.usd_input = 0.0
@@ -178,7 +179,7 @@ with tab5:
     with st.container():
         st.markdown('<div class="input-container">', unsafe_allow_html=True)
         c_r1, c_r2 = st.columns(2)
-        nombre_item = c_r1.text_input("Ítem")
+        nombre_item = c_r1.text_input("¿Qué estamos cotizando?")
         ciudad_item = c_r2.text_input("Ciudad")
         c_r3, c_r4, c_r5 = st.columns(3)
         cat = c_r3.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques", "Otros"])
@@ -194,7 +195,7 @@ with tab5:
                 try:
                     df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
                     nueva = pd.DataFrame([{"Item": nombre_item, "Ciudad": ciudad_item, "Categoría": cat, "Precio_Unit_USD": st.session_state.usd_input, "Cantidad": mult, "Total_USD": tot_usd}])
-                    conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva, ignore_index=True]))
+                    conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva], ignore_index=True))
                     st.success("✅ ¡Guardado!")
                     st.cache_data.clear()
                     st.rerun()
@@ -204,13 +205,22 @@ with tab5:
     try:
         df_base = conn.read(worksheet="Cotizaciones", ttl=0)
         if not df_base.empty:
+            st.markdown("### 📋 Simulador Interactivo")
             df_check = df_base.copy()
             df_check.insert(0, "Seleccionar", False)
             df_edit = st.data_editor(df_check, column_config={"Seleccionar": st.column_config.CheckboxColumn(required=True)}, disabled=["Item", "Ciudad", "Categoría", "Precio_Unit_USD", "Cantidad", "Total_USD"], hide_index=True, use_container_width=True)
+            
             t_sel = df_edit[df_edit["Seleccionar"] == True]["Total_USD"].sum()
             t_gen = df_base["Total_USD"].sum()
+            
             st.write("---")
             col_met1, col_met2 = st.columns(2)
             with col_met1: st.markdown(f'<div class="selected-box">🛒 SELECCIONADO<br>{format_money(t_sel)}</div>', unsafe_allow_html=True)
             with col_met2: st.metric("PRESUPUESTO GENERAL TOTAL", format_money(t_gen))
+            
+            st.write("---")
+            st.markdown("### 📊 Resumen por Categoría (Total General)")
+            df_resumen = df_base.groupby("Categoría")["Total_USD"].sum().reset_index()
+            df_resumen["Suma"] = df_resumen["Total_USD"].apply(format_money)
+            st.table(df_resumen[["Categoría", "Suma"]])
     except: st.info("Sin datos guardados.")
