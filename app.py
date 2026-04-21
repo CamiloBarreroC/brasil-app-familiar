@@ -6,7 +6,7 @@ import requests
 # 1. Configuración de la página
 st.set_page_config(page_title="Misión Brasil 2026", page_icon="🇧🇷", layout="wide")
 
-# --- FUNCIÓN: TASAS DE CAMBIO ---
+# --- FUNCIÓN: TASAS DE CAMBIO (API REAL) ---
 @st.cache_data(ttl=3600)
 def obtener_tasas():
     try:
@@ -34,24 +34,17 @@ st.markdown(f"""
     [data-testid="stTable"] td, [data-testid="stTable"] th {{ color: white !important; border-bottom: 1px solid #31333f; }}
     section[data-testid="stSidebar"] {{ background-color: #000b1a; }}
     .stButton>button {{ background-color: #009c3b; color: white; border-radius: 10px; border: none; font-weight: bold; width: 100%; height: 3em; }}
-    
-    .input-container {{
-        background-color: #1a1c24;
-        padding: 20px;
-        border-radius: 15px;
-        border: 2px solid #009c3b;
-        margin-bottom: 25px;
-    }}
+    .input-container {{ background-color: #1a1c24; padding: 20px; border-radius: 15px; border: 2px solid #009c3b; margin-bottom: 25px; }}
     </style>
     """, unsafe_allow_html=True)
 
 # --- ENCABEZADO ---
-st.markdown("<h1>🚀 MISIÓN BRASIL 2026: ¡EL SUEÑO FAMILIAR!</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.2em;'>19 días: SP, Río, Búzios, Curitiba y Beto Carrero.</p>", unsafe_allow_html=True)
+st.markdown("<h1>🚀 MISIÓN BRASIL 2026: EL SUEÑO FAMILIAR</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2em;'>19 días recorriendo lo mejor de Brasil: SP, Sur, Río y Minas.</p>", unsafe_allow_html=True)
 st.write("---")
 
 # --- SIDEBAR ---
-st.sidebar.header("💰 Finanzas en Vivo")
+st.sidebar.header("💰 Finanzas del Viaje")
 st.sidebar.metric("Dólar (USD)", f"${usd_hoy:,.0f} COP")
 st.sidebar.metric("Real (BRL)", f"${brl_hoy:,.0f} COP")
 st.sidebar.write("---")
@@ -64,90 +57,87 @@ def format_money(usd_val):
 
 # --- PESTAÑAS ---
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "🗺️ RUTA 19 DÍAS", 
-    "⚽ MATI Y ABUELO", 
-    "🎢 BIANCA Y MATI", 
-    "🥂 LOS CONSENTIDOS", 
-    "💰 PRESUPUESTO"
+    "🗺️ RUTA 19 DÍAS", "⚽ MATI Y ABUELO", "🎢 BIANCA Y MATI", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
 ])
 
 # --- PESTAÑA 1: ITINERARIO ---
 with tab1:
     col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
     with col_img2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡Un viaje para recordar por siempre!", width=500)
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", caption="¡Bienvenidos a bordo!", width=500)
     
-    st.header("📅 Nuestra Ruta Paso a Paso")
+    st.header("📅 Itinerario Maestro")
     
     st.markdown("### ✈️ Configuración de Llegada")
     horario_vuelo = st.radio(
         "¿A qué hora aterrizamos en São Paulo el 26 de diciembre?",
-        ["Mañana", "Tarde/Noche"],
-        index=0, horizontal=True
+        ["Mañana", "Tarde/Noche"], index=0, horizontal=True
     )
     
-    # Lógica dinámica según llegada
     if "Mañana" in horario_vuelo:
-        dia_1 = {"Fecha": "26 Dic", "Trayecto": "SP -> Santos", "Hospedaje": "Santos", "Plan": "Aterrizaje, Museo del Fútbol y caminata por los jardines de Santos."}
-        dia_2 = {"Fecha": "27 Dic", "Trayecto": "Santos -> Paraty", "Hospedaje": "Paraty", "Plan": "Vila Belmiro y ruta escénica por la costa hacia Paraty."}
+        h1, p1 = "São Paulo", "Aterrizaje y primer almuerzo brasileño. Tarde de Museo del Fútbol."
+        h2, p2 = "São Paulo", "Día completo en SP: Compras en Jardins y cena familiar."
     else:
-        dia_1 = {"Fecha": "26 Dic", "Trayecto": "Aeropuerto -> Hotel", "Hospedaje": "São Paulo", "Plan": "Traslado y brindis de bienvenida. Descanso del vuelo."}
-        dia_2 = {"Fecha": "27 Dic", "Trayecto": "SP -> Santos", "Hospedaje": "Santos", "Plan": "Mañana en Museo del Fútbol (SP) y tarde en Vila Belmiro (Santos)."}
+        h1, p1 = "São Paulo", "Traslado al hotel y descanso tras el vuelo. Brindis inicial."
+        h2, p2 = "São Paulo", "Mañana de descanso y tarde de Museo del Fútbol en Pacaembú."
 
-    it_base = [
-        {"Fecha": "28 Dic", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico y tarde de cascadas (suelo firme para el abuelo)."},
-        {"Fecha": "29 Dic", "Trayecto": "Paraty -> Río", "Hospedaje": "Río de Janeiro", "Plan": "Tramo final de la Rio-Santos y primer atardecer en Copacabana."},
-        {"Fecha": "30 Dic", "Trayecto": "Río (Estadios)", "Hospedaje": "Río de Janeiro", "Plan": "Maracanã para el abuelo y AquaRio para Bianca y Mati."},
-        {"Fecha": "31 Dic", "Trayecto": "Río (Año Nuevo)", "Hospedaje": "Río de Janeiro", "Plan": "Reveillón: Cena y fuegos artificiales en Copacabana."},
-        {"Fecha": "01 Ene", "Trayecto": "Río Relax", "Hospedaje": "Río de Janeiro", "Plan": "Descanso total tras la fiesta. Paseo por la rambla de Ipanema."},
-        {"Fecha": "02 Ene", "Trayecto": "Río -> Búzios", "Hospedaje": "Búzios", "Plan": "Cristo Redentor por la mañana y salida hacia el glamour de Búzios."},
-        {"Fecha": "03 Ene", "Trayecto": "Estancia Búzios", "Hospedaje": "Búzios", "Plan": "Playas chic, Rua das Pedras y buen vino frente al mar."},
-        {"Fecha": "04 Ene", "Trayecto": "Estancia Búzios", "Hospedaje": "Búzios", "Plan": "Día de relax total en las playas de la península."},
-        {"Fecha": "05 Ene", "Trayecto": "Búzios -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Travesía hacia el sur. Cena en el barrio italiano de Santa Felicidade."},
-        {"Fecha": "06 Ene", "Trayecto": "Estancia Curitiba", "Hospedaje": "Curitiba", "Plan": "Jardín Botánico y Museos (Plan calmado para el abuelo y Amparo)."},
-        {"Fecha": "07 Ene", "Trayecto": "Curitiba -> Penha", "Hospedaje": "Penha", "Plan": "Salida de Curitiba y llegada al mundo de Beto Carrero."},
-        {"Fecha": "08 Ene", "Trayecto": "Beto Carrero", "Hospedaje": "Penha", "Plan": "Día 1: Adrenalina pura para Bianca y Mati (FireWhip/Hot Wheels)."},
-        {"Fecha": "09 Ene", "Trayecto": "Beto Carrero", "Hospedaje": "Penha", "Plan": "Día 2: Shows y últimas montañas rusas para los chicos."},
-        {"Fecha": "10 Ene", "Trayecto": "Penha -> Balneário", "Hospedaje": "Baln. Camboriú", "Plan": "Teleféricos, yates y lujo en la ciudad moderna del sur."},
-        {"Fecha": "11 Ene", "Trayecto": "Balneário -> SP", "Hospedaje": "São Paulo", "Plan": "Regreso a la capital brasileña y descanso nocturno."},
-        {"Fecha": "12 Ene", "Trayecto": "Estancia SP", "Hospedaje": "São Paulo", "Plan": "Compras en Oscar Freire, Mercado Municipal y cena de despedida."},
-        {"Fecha": "13 Ene", "Trayecto": "SP -> Aeropuerto", "Hospedaje": "---", "Plan": "Últimas compras de recuerdos y vuelo de regreso a casa."}
+    it_data = [
+        {"Fecha": "26 Dic", "Trayecto": "Llegada", "Hospedaje": h1, "Plan": p1},
+        {"Fecha": "27 Dic", "Trayecto": "Estancia SP", "Hospedaje": h2, "Plan": p2},
+        {"Fecha": "28 Dic", "Trayecto": "SP -> Balneário", "Hospedaje": "Balneário Camboriú", "Plan": "Bajada al sur (6-7h). Llegada a la ciudad de los rascacielos."},
+        {"Fecha": "29 Dic", "Trayecto": "Estancia BC", "Hospedaje": "Balneário Camboriú", "Plan": "Teleférico Unipraias, playa y caminata por la costanera."},
+        {"Fecha": "30 Dic", "Trayecto": "BC -> Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "Día 1 de Adrenalina en el parque (a 40 min de BC)."},
+        {"Fecha": "31 Dic", "Trayecto": "Año Nuevo (Reveillón)", "Hospedaje": "Balneário Camboriú", "Plan": "Día de playa y gran cena de Año Nuevo con fuegos artificiales."},
+        {"Fecha": "01 Ene", "Trayecto": "Descanso", "Hospedaje": "Balneário Camboriú", "Plan": "Mañana de relax. Tarde de yates y vistas modernas."},
+        {"Fecha": "02 Ene", "Trayecto": "BC -> Santos", "Hospedaje": "Santos", "Plan": "Iniciamos subida por la costa. Noche en la ciudad de Pelé."},
+        {"Fecha": "03 Ene", "Trayecto": "Santos -> Paraty", "Hospedaje": "Paraty", "Plan": "Vila Belmiro por la mañana. Salida a la joya colonial Paraty."},
+        {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico, arquitectura y fotos familiares."},
+        {"Fecha": "05 Ene", "Trayecto": "Paraty -> Río", "Hospedaje": "Río de Janeiro", "Plan": "Tramo escénico Rio-Santos. Atardecer en Copacabana."},
+        {"Fecha": "06 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "Estadio Maracanã y AquaRio para Bianca y Mati."},
+        {"Fecha": "07 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "Cristo Redentor y Pan de Azúcar. Postales de Brasil."},
+        {"Fecha": "08 Ene", "Trayecto": "Río -> Búzios", "Hospedaje": "Búzios", "Plan": "Viaje corto al norte. Llegada al paraíso chic."},
+        {"Fecha": "09 Ene", "Trayecto": "Estancia Búzios", "Hospedaje": "Búzios", "Plan": "Playa, compras en Rua das Pedras y vino frente al mar."},
+        {"Fecha": "10 Ene", "Trayecto": "Búzios -> Belo Horiz.", "Hospedaje": "Belo Horizonte", "Plan": "Travesía a las montañas mineras (8h). Cena de bienvenida."},
+        {"Fecha": "11 Ene", "Trayecto": "Estancia BH", "Hospedaje": "Belo Horizonte", "Plan": "Mineirão para el abuelo y Mercado Central para probar de todo."},
+        {"Fecha": "12 Ene", "Trayecto": "BH -> São Paulo", "Hospedaje": "São Paulo", "Plan": "Regreso a la base final. Gran cena de despedida."},
+        {"Fecha": "13 Ene", "Trayecto": "Regreso", "Hospedaje": "---", "Plan": "Últimas compras y traslado al aeropuerto."}
     ]
-    
-    it_completo = [dia_1, dia_2] + it_base
-    st.table(pd.DataFrame(it_completo))
+    st.table(pd.DataFrame(it_data))
 
-# --- LAS DEMÁS PESTAÑAS (Fútbol, Adrenalina, Consentidos, Presupuesto) SIGUEN IGUAL ---
+# --- PESTAÑA 2: MATI Y EL ABUELO ---
 with tab2:
-    st.header("🏟️ Ruta de los Templos Sagrados")
-    f1c1, f1c2 = st.columns(2)
-    with f1c1: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/maracana.jpg", caption="Maracanã", width=400)
-    with f1c2: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/pacaembu.jpg", caption="Museo del Fútbol", width=400)
-    st.write("---")
-    f2c1, f2c2 = st.columns(2)
-    with f2c1: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/santos.jpg", caption="Vila Belmiro", width=400)
-    with f2c2: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/mineirao.jpg", caption="Mineirão", width=400)
+    st.header("🏟️ Territorio Futbolero")
+    st.write("Para el Abuelito y Mati: Historia y piel de gallina en cada estadio.")
+    c1, c2 = st.columns(2)
+    with c1: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/maracana.jpg", caption="Maracanã", width=400)
+    with c2: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/pacaembu.jpg", caption="Museo del Fútbol", width=400)
+    c3, c4 = st.columns(2)
+    with c3: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/santos.jpg", caption="Vila Belmiro (Santos)", width=400)
+    with c4: st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/mineirao.jpg", caption="Mineirão (Belo Horizonte)", width=400)
 
+# --- PESTAÑA 3: BIANCA Y MATI ---
 with tab3:
     st.header("🎢 Gritos y Adrenalina")
-    col_p1, col_p2 = st.columns(2)
-    with col_p1:
-        st.image("https://images.unsplash.com/photo-1513889959013-c2845acb46ad?q=80&w=500", caption="Beto Carrero World")
-    with col_p2:
-        st.subheader("Para Bianca y Mati:")
-        st.write("- **FireWhip:** Montaña rusa invertida.\n- **Big Tower:** Caída de 100m.\n- **Hot Wheels Show:** Acrobacias reales.")
+    st.write("Para Bianca y Mati: El mundo temático los espera.")
+    col_a1, col_a2 = st.columns(2)
+    with col_a1: st.image("https://images.unsplash.com/photo-1513889959013-c2845acb46ad?q=80&w=500", caption="Beto Carrero World")
+    with col_a2:
+        st.subheader("¡Imperdibles!")
+        st.write("- **FireWhip:** La invertida más rápida.\n- **Big Tower:** Caída de 100 metros.\n- **Hot Wheels Show:** Acrobacias en vivo.\n- **AquaRio:** Tiburones en el túnel.")
 
+# --- PESTAÑA 4: LOS CONSENTIDOS ---
 with tab4:
     st.header("🥂 El Club de los Consentidos")
-    st.write("**Amparo, Jime, Diana y Giorgio:**")
-    col_c1, col_c2 = st.columns(2)
-    with col_c1:
-        st.subheader("🍴 Gastronomía y Vinos")
-        st.write("- Cena frente al mar en Búzios.\n- Pizza gourmet en São Paulo.\n- Brunch en Leblon.")
-    with col_c2:
-        st.subheader("🛍️ Compras y Caminatas")
-        st.write("- Oscar Freire (SP).\n- Jardín Botánico (Curitiba).\n- Atardeceres en el Arpoador.")
+    st.write("**Amparo, Jime, Diana y Giorgio:** Aquí mandan el buen paladar y el estilo.")
+    col_g1, col_g2 = st.columns(2)
+    with col_g1:
+        st.subheader("🍴 Gourmet & Vinos")
+        st.write("- **Búzios:** Cena de lujo frente al mar.\n- **São Paulo:** La mejor pizza de tu vida.\n- **Minas:** Pão de queijo y café artesanal.")
+    with col_g2:
+        st.subheader("🛍️ Shopping & Relax")
+        st.write("- **Rua Oscar Freire (SP):** Tiendas exclusivas.\n- **Baln. Camboriú:** Caminata por la costanera moderna.\n- **Paraty:** Artesanías con historia.")
 
+# --- PESTAÑA 5: PRESUPUESTO (LOGICA ORIGINAL) ---
 with tab5:
     st.header("💰 Gestión de Presupuesto")
     if 'usd_input' not in st.session_state: st.session_state.usd_input = 0.0
@@ -158,7 +148,7 @@ with tab5:
     with st.container():
         st.markdown('<div class="input-container">', unsafe_allow_html=True)
         col_f1, col_f2 = st.columns(2)
-        nombre_item = col_f1.text_input("¿Qué cotizamos?", placeholder="Ej: Hotel en Búzios")
+        nombre_item = col_f1.text_input("¿Qué cotizamos?")
         categoria = col_f2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques"])
         col_p1, col_p2, col_p3 = st.columns(3)
         with col_p1: st.number_input("Pesos (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
@@ -176,12 +166,9 @@ with tab5:
                 st.cache_data.clear()
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-
     try:
         df_mostrar = conn.read(worksheet="Cotizaciones", ttl=0)
         if not df_mostrar.empty:
-            st.write("---")
-            st.subheader("📋 Resumen de Gastos")
             st.dataframe(df_mostrar, use_container_width=True)
-            st.metric("VALOR TOTAL ESTIMADO", format_money(df_mostrar["USD"].sum()))
-    except: st.info("Sin cotizaciones.")
+            st.metric("TOTAL ESTIMADO", format_money(df_mostrar["USD"].sum()))
+    except: st.info("Aún no hay cotizaciones.")
