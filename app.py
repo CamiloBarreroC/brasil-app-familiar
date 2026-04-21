@@ -80,19 +80,19 @@ with tab1:
         {"Fecha": "28 Dic", "Trayecto": "SP -> Balneário", "Hospedaje": "Balneário Camboriú", "Plan": "Viaje al sur (6h)."},
         {"Fecha": "29-30 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 2 Días de Parque."},
         {"Fecha": "31 Dic", "Trayecto": "Año Nuevo (BC)", "Hospedaje": "Balneário Camboriú", "Plan": "Reveillón en la playa."},
-        {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida 11 AM (3h)."},
-        {"Fecha": "02 Ene", "Trayecto": "Curitiba -> Santos", "Hospedaje": "Santos", "Plan": "🌿 Jardín Botánico y Santos."},
+        {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida 11 AM hacia Curitiba (3h)."},
+        {"Fecha": "02 Ene", "Trayecto": "Curitiba -> Santos", "Hospedaje": "Santos", "Plan": "🌿 Jardín Botánico y Santos (5h)."},
         {"Fecha": "03 Ene", "Trayecto": "Santos -> Paraty", "Hospedaje": "Paraty", "Plan": "⚽ Vila Belmiro y ruta a Paraty."},
         {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico."},
         {"Fecha": "05-07 Ene", "Trayecto": "Río de Janeiro", "Hospedaje": "Río de Janeiro", "Plan": "Copacabana, Cristo y Maracanã."},
-        {"Fecha": "08 Ene", "Trayecto": "Río -> Petrópolis", "Hospedaje": "Petrópolis", "Plan": "🏰 Subida Imperial."},
+        {"Fecha": "08 Ene", "Trayecto": "Río -> Petrópolis", "Hospedaje": "Petrópolis", "Plan": "🏰 Subida Imperial (2h)."},
         {"Fecha": "09-11 Ene", "Trayecto": "Minas Gerais", "Hospedaje": "Belo Horizonte", "Plan": "⚽ Mineirão y Ouro Preto."},
         {"Fecha": "12 Ene", "Trayecto": "BH -> São Paulo", "Hospedaje": "São Paulo", "Plan": "Cena de despedida."},
         {"Fecha": "13 Ene", "Trayecto": "Vuelo Regreso", "Hospedaje": "---", "Plan": "Aeropuerto."}
     ]
     st.table(pd.DataFrame(it_data))
 
-# --- PESTAÑA: RECORRIDO (MAPA CENTRADO) ---
+# --- PESTAÑA: RECORRIDO ---
 with tab_map:
     st.header("📍 Trazado Maestro de la Ruta")
     url_mapa = "https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/recorrido_maestro_brasil.png"
@@ -124,19 +124,24 @@ with tab3:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/hot_wheels_mati.jpg", caption="Hot Wheels Show")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/star_mountain_loop.jpg", caption="Star Mountain")
 
-# --- PESTAÑA 4: LOS CONSENTIDOS ---
+# --- PESTAÑA 4: LOS CONSENTIDOS (CON NOMBRES RESTAURADOS) ---
 with tab4:
     st.header("🥂 Los Consentidos: Estilo e Historia")
+    st.markdown("### Para Amparo, Jime, Diana y Giorgio")
+    st.write("El placer de viajar con sofisticación, buena mesa y mucha historia.")
+    
     col_c1, col_c2 = st.columns(2)
     with col_c1:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/museu_imperial_petropolis.jpg", caption="🏰 Petrópolis")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="☕ Minas Gerais")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/museu_imperial_petropolis.jpg", caption="🏰 Petrópolis: Historia Imperial")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="☕ Minas Gerais: El sabor de la montaña")
     with col_c2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardim_botanico_curitiba.jpg", caption="🌿 Curitiba")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="🛍️ São Paulo")
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="⛪ Ouro Preto", use_container_width=True)
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardim_botanico_curitiba.jpg", caption="🌿 Curitiba: Paseo y Naturaleza")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="🛍️ São Paulo: Shopping Oscar Freire")
+    
+    st.write("---")
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="⛪ Ouro Preto: Tesoros coloniales", use_container_width=True)
 
-# --- PESTAÑA 5: PRESUPUESTO (CON CAMPO CIUDAD) ---
+# --- PESTAÑA 5: PRESUPUESTO (CON CIUDAD Y CANTIDAD) ---
 with tab5:
     st.header("💰 Gestión de Presupuesto")
     
@@ -155,15 +160,15 @@ with tab5:
         nombre_item = c_row1_1.text_input("¿Qué estamos cotizando? (Ej: Airbnb, Vuelo)")
         ciudad_item = c_row1_2.text_input("Ciudad (Opcional)")
         
-        # Fila 2: Categoría y Precios
+        # Fila 2: Categoría y Precios Unitarios
         c_row2_1, c_row2_2, c_row2_3 = st.columns(3)
         categoria = c_row2_1.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques", "Otros"])
-        with c_row2_2: st.number_input("Precio base (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
-        with c_row2_3: st.number_input("Precio base (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
+        with c_row2_2: st.number_input("Precio Unitario (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
+        with c_row2_3: st.number_input("Precio Unitario (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
         
-        # Fila 3: Cantidad y Resultado
+        # Fila 3: Cantidad y Multiplicador
         c_row3_1, c_row3_2 = st.columns([1, 2])
-        multiplicador = c_row3_1.number_input("Cantidad", min_value=1, value=1, step=1)
+        multiplicador = c_row3_1.number_input("Cantidad (8 personas, 3 habs, etc.)", min_value=1, value=1, step=1)
         
         total_usd_item = st.session_state.usd_input * multiplicador
         c_row3_2.markdown(f"### Total ítem: {format_money(total_usd_item)}")
@@ -173,7 +178,6 @@ with tab5:
                 try:
                     df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
                 except:
-                    # Si la tabla está vacía, creamos los encabezados
                     df_actual = pd.DataFrame(columns=["Item", "Ciudad", "Categoría", "Precio_Unit_USD", "Cantidad", "Total_USD"])
                 
                 nueva_fila = pd.DataFrame([{
@@ -185,11 +189,10 @@ with tab5:
                     "Total_USD": total_usd_item
                 }])
                 
-                # Concatenamos y actualizamos
                 df_final = pd.concat([df_actual, nueva_fila], ignore_index=True)
                 conn.update(worksheet="Cotizaciones", data=df_final)
                 
-                st.success(f"✅ ¡{nombre_item} guardado en {ciudad_item if ciudad_item else 'el presupuesto'}!")
+                st.success("✅ ¡Cotización guardada!")
                 st.cache_data.clear()
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
