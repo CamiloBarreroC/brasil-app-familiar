@@ -61,7 +61,6 @@ tab1, tab_map, tab2, tab3, tab4, tab5 = st.tabs([
 
 # --- PESTAÑA 1: ITINERARIO ---
 with tab1:
-    # IMAGEN DE INICIO
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", use_container_width=True)
     
     st.markdown("### ✈️ Configuración de Llegada (26 Dic)")
@@ -137,7 +136,7 @@ with tab4:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="🛍️ São Paulo")
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="⛪ Ouro Preto", use_container_width=True)
 
-# --- PESTAÑA 5: PRESUPUESTO (DINÁMICO) ---
+# --- PESTAÑA 5: PRESUPUESTO (CON CAMPO CIUDAD) ---
 with tab5:
     st.header("💰 Gestión de Presupuesto")
     
@@ -150,35 +149,47 @@ with tab5:
     st.subheader("➕ Agregar Ítem al Presupuesto")
     with st.container():
         st.markdown('<div class="input-container">', unsafe_allow_html=True)
-        col1, col2 = st.columns(2)
-        nombre_item = col1.text_input("¿Qué estamos cotizando? (Ej: Vuelo, Airbnb, Entradas)")
-        categoria = col2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques"])
         
-        cp1, cp2, cp3 = st.columns(3)
-        with cp1: st.number_input("Precio base (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
-        with cp2: st.number_input("Precio base (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
-        with cp3: multiplicador = st.number_input("Cantidad (Personas, Habitaciones, etc.)", min_value=1, value=1, step=1)
+        # Fila 1: Nombre y Ciudad
+        c_row1_1, c_row1_2 = st.columns(2)
+        nombre_item = c_row1_1.text_input("¿Qué estamos cotizando? (Ej: Airbnb, Vuelo)")
+        ciudad_item = c_row1_2.text_input("Ciudad (Opcional)")
+        
+        # Fila 2: Categoría y Precios
+        c_row2_1, c_row2_2, c_row2_3 = st.columns(3)
+        categoria = c_row2_1.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques", "Otros"])
+        with c_row2_2: st.number_input("Precio base (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
+        with c_row2_3: st.number_input("Precio base (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
+        
+        # Fila 3: Cantidad y Resultado
+        c_row3_1, c_row3_2 = st.columns([1, 2])
+        multiplicador = c_row3_1.number_input("Cantidad", min_value=1, value=1, step=1)
         
         total_usd_item = st.session_state.usd_input * multiplicador
-        st.markdown(f"### Total de este ítem: {format_money(total_usd_item)}")
+        c_row3_2.markdown(f"### Total ítem: {format_money(total_usd_item)}")
         
         if st.button("🚀 GUARDAR EN PRESUPUESTO"):
             if nombre_item and st.session_state.usd_input > 0:
                 try:
                     df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
                 except:
-                    df_actual = pd.DataFrame(columns=["Item", "Categoría", "Precio_Unit_USD", "Cantidad", "Total_USD"])
+                    # Si la tabla está vacía, creamos los encabezados
+                    df_actual = pd.DataFrame(columns=["Item", "Ciudad", "Categoría", "Precio_Unit_USD", "Cantidad", "Total_USD"])
                 
                 nueva_fila = pd.DataFrame([{
                     "Item": nombre_item, 
+                    "Ciudad": ciudad_item,
                     "Categoría": categoria, 
                     "Precio_Unit_USD": st.session_state.usd_input,
                     "Cantidad": multiplicador,
                     "Total_USD": total_usd_item
                 }])
                 
-                conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva_fila], ignore_index=True))
-                st.success("✅ ¡Guardado exitosamente!")
+                # Concatenamos y actualizamos
+                df_final = pd.concat([df_actual, nueva_fila], ignore_index=True)
+                conn.update(worksheet="Cotizaciones", data=df_final)
+                
+                st.success(f"✅ ¡{nombre_item} guardado en {ciudad_item if ciudad_item else 'el presupuesto'}!")
                 st.cache_data.clear()
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -189,4 +200,4 @@ with tab5:
             st.dataframe(df_mostrar, use_container_width=True)
             st.metric("TOTAL ESTIMADO DEL VIAJE", format_money(df_mostrar["Total_USD"].sum()))
     except:
-        st.info("Aún no hay datos guardados en el presupuesto.")
+        st.info("Aún no hay datos guardados.")
