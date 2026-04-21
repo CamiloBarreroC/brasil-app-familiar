@@ -77,12 +77,12 @@ with tab1:
         {"Fecha": "26 Dic", "Trayecto": "Llegada SP", "Hospedaje": "São Paulo", "Plan": p1},
         {"Fecha": "27 Dic", "Trayecto": "Estancia SP", "Hospedaje": "São Paulo", "Plan": p2},
         {"Fecha": "28 Dic", "Trayecto": "SP -> Balneário", "Hospedaje": "Balneário Camboriú", "Plan": "Viaje al sur (6h). Llegada a la 'Dubai brasileña'."},
-        {"Fecha": "29-30 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 DÍAS DE PARQUE: FireWhip, Big Tower y Hot Wheels."},
+        {"Fecha": "29-30 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 2 DÍAS DE PARQUE: FireWhip, Big Tower y Hot Wheels."},
         {"Fecha": "31 Dic", "Trayecto": "Año Nuevo (BC)", "Hospedaje": "Balneário Camboriú", "Plan": "Reveillón con fuegos artificiales sobre los rascacielos."},
         {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida calmada 11 AM (3h). Cena y relax en Curitiba."},
         {"Fecha": "02 Ene", "Trayecto": "Curitiba -> Santos", "Hospedaje": "Santos", "Plan": "🌿 Jardín Botánico y bajada por la sierra hacia Santos (5h)."},
         {"Fecha": "03 Ene", "Trayecto": "Santos -> Paraty", "Hospedaje": "Paraty", "Plan": "⚽ Vila Belmiro. Ruta mágica hacia Paraty."},
-        {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico: calles de piedra y puerto antiguo."},
+        {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico colonial: calles de piedra y puerto antiguo."},
         {"Fecha": "05 Ene", "Trayecto": "Paraty -> Río", "Hospedaje": "Río de Janeiro", "Plan": "Check-in en Copacabana y primer baño de mar."},
         {"Fecha": "06 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "⚽ Maracanã (Mañana) y AquaRio (Tarde)."},
         {"Fecha": "07 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "Cristo Redentor y Pan de Azúcar."},
@@ -118,7 +118,7 @@ with tab2:
 with tab3:
     st.header("🎢 Beto Carrero World & Aventuras Acuáticas")
     st.markdown("### El Mundo de Bianca y Mati")
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/beto_carrero_portal.jpg", caption="¡Bienvenidos!", use_container_width=True)
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/beto_carrero_portal.jpg", use_container_width=True)
     
     col_p1, col_p2 = st.columns(2)
     with col_p1:
@@ -133,13 +133,16 @@ with tab3:
     st.markdown("Visita al **AquaRio**, el acuario marino más grande de Sudamérica.")
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/aquario_rio.jpg", caption="AquaRio: Túneles de cristal y tiburones.", use_container_width=True)
 
-# --- PESTAÑA: LOS CONSENTIDOS (CON CAMBORIÚ DE DÍA) ---
+# --- PESTAÑA: LOS CONSENTIDOS (NUEVA DESCRIPCIÓN, NOMBRE ORIGINAL) ---
 with tab4:
     st.header("🥂 Los Consentidos: Estilo e Historia")
     st.markdown("### Para Amparo, Jime, Diana y Giorgio")
     
     st.subheader("🏖️ Vida de Playa y Récords")
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_dia.jpg", caption="Balneário Camboriú: La 'Dubai Brasileña' bajo el sol.", use_container_width=True)
+    st.markdown("Nuestra base en el sur será Balneário Camboriú. Disfrutaremos del mar de día bajo el imponente skyline.")
+    
+    # REVERTIDO: Volvemos a playa_camboriu_noche.jpg pero el texto dice "de día"
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_noche.jpg", caption="Balneário Camboriú: El impresionante skyline de la 'Dubai Brasileña'.", use_container_width=True)
     
     col_b1, col_b2 = st.columns(2)
     with col_b1:
@@ -191,7 +194,7 @@ with tab5:
                 try:
                     df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
                     nueva = pd.DataFrame([{"Item": nombre_item, "Ciudad": ciudad_item, "Categoría": cat, "Precio_Unit_USD": st.session_state.usd_input, "Cantidad": mult, "Total_USD": tot_usd}])
-                    conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva], ignore_index=True))
+                    conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva, ignore_index=True]))
                     st.success("✅ ¡Guardado!")
                     st.cache_data.clear()
                     st.rerun()
@@ -210,4 +213,4 @@ with tab5:
             col_met1, col_met2 = st.columns(2)
             with col_met1: st.markdown(f'<div class="selected-box">🛒 SELECCIONADO<br>{format_money(t_sel)}</div>', unsafe_allow_html=True)
             with col_met2: st.metric("PRESUPUESTO GENERAL TOTAL", format_money(t_gen))
-    except: st.info("Sin datos.")
+    except: st.info("Sin datos guardados.")
