@@ -6,15 +6,13 @@ import requests
 # 1. Configuración de la página
 st.set_page_config(page_title="Misión Brasil 2026", page_icon="🇧🇷", layout="wide")
 
-# --- FUNCIÓN: TASAS DE CAMBIO (API REAL-TIME) ---
+# --- FUNCIÓN: TASAS DE CAMBIO ---
 @st.cache_data(ttl=3600)
 def obtener_tasas():
     try:
         response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
         data = response.json()
-        usd_cop = data['rates']['COP']
-        usd_brl = data['rates']['BRL']
-        return usd_cop, usd_cop / usd_brl
+        return data['rates']['COP'], data['rates']['COP'] / data['rates']['BRL']
     except:
         return 3950.0, 780.0
 
@@ -41,11 +39,10 @@ st.markdown(f"""
 st.markdown("<h1>🚀 MISIÓN BRASIL 2026: EL SUEÑO FAMILIAR</h1>", unsafe_allow_html=True)
 st.write("---")
 
-# --- SIDEBAR (FINANZAS) ---
+# --- SIDEBAR ---
 st.sidebar.header("💰 Finanzas en Vivo")
 st.sidebar.metric("Dólar (USD)", f"${usd_hoy:,.0f} COP")
 st.sidebar.metric("Real (BRL)", f"${brl_hoy:,.0f} COP")
-st.sidebar.write("---")
 moneda_v = st.sidebar.radio("Ver presupuesto en:", ["COP", "USD", "BRL"])
 
 def format_money(usd_val):
@@ -53,20 +50,20 @@ def format_money(usd_val):
     if moneda_v == "BRL": return f"R$ {(usd_val * usd_hoy)/brl_hoy:,.2f}"
     return f"$ {usd_val:,.2f} USD"
 
-# --- PESTAÑAS ---
+# --- PESTAÑAS (NOMBRE DE PESTAÑA 3 ACTUALIZADO) ---
 tab1, tab_map, tab2, tab3, tab4, tab5 = st.tabs([
-    "🗺️ RUTA 19 DÍAS", "📍 RECORRIDO", "⚽ MATI Y ABUELO", "🎢 BIANCA Y MATI", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
+    "🗺️ RUTA 19 DÍAS", "📍 RECORRIDO", "⚽ MATI Y ABUELO", "🎁 AVENTURAS B&M", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
 ])
 
-# --- PESTAÑA 1: ITINERARIO NARRATIVO ---
+# --- TAB 1: ITINERARIO COMPLETO (DESCRIPCIONES LARGAS) ---
 with tab1:
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", use_container_width=True)
-    st.markdown("### 📅 Detalle del Itinerario")
-    horario_vuelo = st.radio("¿A qué hora aterrizamos en São Paulo?", ["Mañana", "Tarde/Noche"], index=0, horizontal=True)
+    st.markdown("### 📅 Itinerario Detallado")
+    horario_vuelo = st.radio("Para ajustar el inicio, ¿a qué hora aterrizamos en São Paulo?", ["Mañana", "Tarde/Noche"], horizontal=True)
     
     if "Mañana" in horario_vuelo:
         p1 = "⚽ Aterrizaje y visita al MUSEO DEL FÚTBOL (Pacaembú). Almuerzo en el estadio y cena italiana en Jardins."
-        p2 = "🛍️ Compras en la exclusiva Oscar Freire y visita al Mercado Municipal para el famoso sándwich de mortadela."
+        p2 = "🛍️ Compras en Oscar Freire y visita al Mercado Municipal para el famoso sándwich de mortadela."
     else:
         p1 = "🏨 Llegada al hotel, brindis de bienvenida con Caipirinha y descanso total del vuelo internacional."
         p2 = "⚽ Mañana de MUSEO DEL FÚTBOL (Pacaembú). Tarde de compras en Jardins y cena familiar de lujo."
@@ -75,21 +72,20 @@ with tab1:
         {"Fecha": "26 Dic", "Trayecto": "Llegada SP", "Hospedaje": "São Paulo", "Plan": p1},
         {"Fecha": "27 Dic", "Trayecto": "Estancia SP", "Hospedaje": "São Paulo", "Plan": p2},
         {"Fecha": "28 Dic", "Trayecto": "SP -> Balneário", "Hospedaje": "Balneário Camboriú", "Plan": "Viaje al sur (6h). Llegada a la 'Dubai brasileña'. Cena frente al mar en la Avenida Atlântica."},
-        {"Fecha": "29 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 DÍA 1 PARQUE: Foco en Adrenalina (FireWhip y Big Tower) para Bianca y Mati."},
-        {"Fecha": "30 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 DÍA 2 PARQUE: Hot Wheels Show, Star Mountain y repetición de las favoritas de los chicos."},
+        {"Fecha": "29-30 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 2 DÍAS DE PARQUE: FireWhip, Big Tower y el Show de Hot Wheels para los chicos."},
         {"Fecha": "31 Dic", "Trayecto": "Año Nuevo (BC)", "Hospedaje": "Balneário Camboriú", "Plan": "Mañana de playa y noche de 'Reveillón' con el espectáculo de fuegos artificiales más grande de la región."},
-        {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida calmada 11 AM (3h). Almuerzo en Curitiba y tarde de relax para recargar energías."},
+        {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida calmada 11 AM (3h). Almuerzo en Curitiba y tarde de relax para recargar energías tras el año nuevo."},
         {"Fecha": "02 Ene", "Trayecto": "Curitiba -> Santos", "Hospedaje": "Santos", "Plan": "🌿 Mañana en el Jardín Botánico de Curitiba. Bajada por la sierra hacia Santos para caminar por el jardín de playa más largo del mundo."},
         {"Fecha": "03 Ene", "Trayecto": "Santos -> Paraty", "Hospedaje": "Paraty", "Plan": "⚽ Vila Belmiro (Santuario de Pelé). Salida hacia la magia colonial de Paraty."},
         {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico: calles de piedra, ventanas de colores y el encanto del puerto antiguo."},
         {"Fecha": "05 Ene", "Trayecto": "Paraty -> Río", "Hospedaje": "Río de Janeiro", "Plan": "Ruta por la Costa Verde. Check-in en Copacabana y primer baño de mar en la Ciudad Maravillosa."},
-        {"Fecha": "06 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "⚽ Tour por el Maracanã y visita al AquaRio para Bianca y Mati. Atardecer en Ipanema."},
-        {"Fecha": "07 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "Subida al Cristo Redentor y atardecer inolvidable en el Pan de Azúcar."},
-        {"Fecha": "08 Ene", "Trayecto": "Río -> Petrópolis", "Hospedaje": "Petrópolis", "Plan": "🏰 El Eje Imperial: Subida a la sierra (2h). Tour por el Palacio Imperial y cena de vinos de montaña."},
-        {"Fecha": "09 Ene", "Trayecto": "Petrópolis -> BH", "Hospedaje": "Belo Horizonte", "Plan": "Viaje hacia Minas (5h). Llegada a BH y primera inmersión en la gastronomía minera."},
-        {"Fecha": "10 Ene", "Trayecto": "Estancia BH", "Hospedaje": "Belo Horizonte", "Plan": "⚽ Estadio Mineirão por la mañana y gran banquete en el Mercado Central (Quesos y Dulces)."},
-        {"Fecha": "11 Ene", "Trayecto": "Ouro Preto", "Hospedaje": "Belo Horizonte", "Plan": "Día completo en la joya barroca. Caminata entre iglesias bañadas en oro y arte colonial."},
-        {"Fecha": "12 Ene", "Trayecto": "BH -> São Paulo", "Hospedaje": "São Paulo", "Plan": "Regreso a la base final (8h). Gran cena de despedida familiar en una churrascaría típica."},
+        {"Fecha": "06 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "⚽ Tour por el Maracanã (Mañana) y visita al AquaRio, el acuario marino más grande de Sudamérica (Tarde). Atardecer en Ipanema."},
+        {"Fecha": "07 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "Subida al Cristo Redentor y atardecer inolvidable en el Pan de Azúcar para la foto familiar definitiva."},
+        {"Fecha": "08 Ene", "Trayecto": "Río -> Petrópolis", "Hospedaje": "Petrópolis", "Plan": "🏰 El Eje Imperial: Subida a la sierra (2h). Tour por el Palacio Imperial de Pedro II y cena de vinos de montaña."},
+        {"Fecha": "09 Ene", "Trayecto": "Petrópolis -> BH", "Hospedaje": "Belo Horizonte", "Plan": "Viaje a Minas Gerais (5h). Llegada a BH y primera inmersión en la gastronomía minera (el mejor queso del mundo)."},
+        {"Fecha": "10 Ene", "Trayecto": "Estancia BH", "Hospedaje": "Belo Horizonte", "Plan": "⚽ Estadio Mineirão por la mañana y gran banquete en el Mercado Central para comprar dulces y recuerdos."},
+        {"Fecha": "11 Ene", "Trayecto": "Ouro Preto", "Hospedaje": "Belo Horizonte", "Plan": "Día completo en la joya barroca de Ouro Preto. Caminata entre iglesias bañadas en oro y arte colonial."},
+        {"Fecha": "12 Ene", "Trayecto": "BH -> São Paulo", "Hospedaje": "São Paulo", "Plan": "Regreso a base final (8h). Gran cena de despedida familiar en una churrascaría tradicional typical."},
         {"Fecha": "13 Ene", "Trayecto": "Vuelo Regreso", "Hospedaje": "---", "Plan": "Últimas compras de tiquis-miquis y traslado al aeropuerto."}
     ]
     st.table(pd.DataFrame(it_data))
@@ -113,47 +109,60 @@ with tab2:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/pacaembu.jpg", caption="Museo del Fútbol (SP)")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/mineirao.jpg", caption="Mineirão (BH)")
 
-# --- TAB 4: BIANCA Y MATI ---
+# --- TAB 4: AVENTURAS B&M (CON AQUARIO Y NOMBRE ACTUALIZADO) ---
 with tab3:
-    st.header("🎢 Bianca y Mati: Adrenalina")
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/beto_carrero_portal.jpg", use_container_width=True)
+    st.header("Beto Carrero World & Aventuras Acuáticas")
+    st.markdown("### El Mundo de Bianca y Mati")
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/beto_carrero_portal.jpg", caption="¡Bienvenidos al Castillo de las Fantasías!", use_container_width=True)
+    
     col_p1, col_p2 = st.columns(2)
     with col_p1:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/firewhip_bianca.jpg", caption="FireWhip")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/big_tower_caida.jpg", caption="Big Tower")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/firewhip_bianca.jpg", caption="FireWhip: ¡Solo para valientes!")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/big_tower_caida.jpg", caption="Big Tower: 100 metros de caída libre")
     with col_p2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/hot_wheels_mati.jpg", caption="Hot Wheels Show")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/star_mountain_loop.jpg", caption="Star Mountain")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/hot_wheels_mati.jpg", caption="Hot Wheels Epic Show: ¡Mati lo va a amar!")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/star_mountain_loop.jpg", caption="Star Mountain: El doble loop clásico")
+    
+    st.write("---")
+    st.subheader("🐠 Río de Janeiro: Aventuras bajo el Mar")
+    st.markdown("Como te había mencionado, Bianca y Mati tendrán su momento mágico en Río visitando el **AquaRio**, el acuario marino más grande de Sudamérica. Es una experiencia inmersiva increíble.")
+    
+    # NUEVA FOTO: AQUARIO
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/aquario_rio.jpg", caption="AquaRio: Tiburones y túneles de cristal. ¡Imperdible!", use_container_width=True)
 
-# --- TAB 5: LOS CONSENTIDOS (GALERÍA AMPLIADA) ---
+# --- TAB 5: LOS CONSENTIDOS (NUEVO DISEÑO DE PLAYAS Y PARATY) ---
 with tab4:
-    st.header("🥂 Los Consentidos: Estilo, Historia y Sabor")
+    st.header("🥂 Los Consentidos: Estilo e Historia")
     st.markdown("### Para Amparo, Jime, Diana y Giorgio")
     
-    st.subheader("🏖️ Vida de Playa y Récords Mundiales")
-    col_beach1, col_beach2, col_beach3 = st.columns(3)
+    st.subheader("🏖️ El Paraíso frente al Mar")
+    st.markdown("Nuestra base en el sur será Balneário Camboriú, donde recibiremos el año nuevo. También disfrutaremos del mar en Río.")
+    
+    # DISEÑO: CAMBORIÚ GRANDE, RÍO Y SANTOS ABAJO
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_noche.jpg", caption="Balneário Camboriú: La 'Dubai Brasileña' iluminada para recibir el año.", use_container_width=True)
+    
+    col_beach1, col_beach2 = st.columns(2)
     with col_beach1:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_rio_copacabana.jpg", caption="Copacabana, Río")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_rio_copacabana.jpg", caption="Copacabana, Río: La postal de Brasil.")
     with col_beach2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_noche.jpg", caption="Baln. Camboriú")
-    with col_beach3:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardin_orla_santos.jpg", caption="Jardín de Santos (Guinness)")
+        # AHORA SANTOS APARECE AQUÍ, BAJO CAMBORIÚ
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardin_orla_santos.jpg", caption="Orla de Santos: Caminata por el jardín de playa más largo del mundo (Guinness).")
 
     st.write("---")
     st.subheader("🏰 Historia, Compras y Gastronomía")
-    col_hist1, col_hist2 = st.columns(2)
-    with col_hist1:
+    col_c1, col_c2 = st.columns(2)
+    with col_c1:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/museu_imperial_petropolis.jpg", caption="Petrópolis Imperial")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/paraty_colonial.jpg", caption="Paraty: Magia Colonial")
-    with col_hist2:
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/paraty_colonial.jpg", caption="Paraty: Magia Colonial en cada calle")
+    with col_c2:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="Sabor de Minas Gerais")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="Shopping Oscar Freire (SP)")
     
     st.write("---")
-    col_hist3, col_hist4 = st.columns(2)
-    with col_hist3:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardim_botanico_curitiba.jpg", caption="Jardín Botánico Curitiba")
-    with col_hist4:
+    col_c3, col_c4 = st.columns(2)
+    with col_c3:
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardim_botanico_curitiba.jpg", caption="🌿 Curitiba: Paseo y Naturaleza")
+    with col_c4:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="Barroco en Ouro Preto")
 
 # --- TAB 6: PRESUPUESTO INTERACTIVO ---
@@ -167,40 +176,41 @@ with tab5:
     st.subheader("➕ Agregar Ítem")
     with st.container():
         st.markdown('<div class="input-container">', unsafe_allow_html=True)
-        c_row1_1, c_row1_2 = st.columns(2)
-        nombre_item = c_row1_1.text_input("¿Qué estamos cotizando?")
-        ciudad_item = c_row1_2.text_input("Ciudad")
-        c_row2_1, c_row2_2, c_row2_3 = st.columns(3)
-        categoria = c_row2_1.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques", "Otros"])
-        with c_row2_2: st.number_input("Precio base (COP)", key="cop_input", on_change=sync_to_usd, step=50000.0)
-        with c_row2_3: st.number_input("Precio base (USD)", key="usd_input", on_change=sync_to_cop, step=10.0)
-        c_row3_1, c_row3_2 = st.columns([1, 2])
-        multiplicador = c_row3_1.number_input("Cantidad", min_value=1, value=1)
-        total_usd_item = st.session_state.usd_input * multiplicador
-        c_row3_2.markdown(f"### Total ítem: {format_money(total_usd_item)}")
+        c1, c2 = st.columns(2)
+        n_item = c1.text_input("Ítem")
+        c_item = c2.text_input("Ciudad")
+        c3, c4, c5 = st.columns(3)
+        cat = c3.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques", "Otros"])
+        with c4: st.number_input("Precio base (COP)", key="cop_input", on_change=sync_to_usd, step=50000.0)
+        with c5: st.number_input("Precio base (USD)", key="usd_input", on_change=sync_to_cop, step=10.0)
+        c6, c7 = st.columns([1, 2])
+        mult = c6.number_input("Cantidad", min_value=1, value=1)
+        tot_usd = st.session_state.usd_input * mult
+        c7.markdown(f"### Total ítem: {format_money(tot_usd)}")
+        
         if st.button("🚀 GUARDAR EN PRESUPUESTO"):
-            if nombre_item and st.session_state.usd_input > 0:
+            if n_item and st.session_state.usd_input > 0:
                 try:
-                    df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
-                    nueva_fila = pd.DataFrame([{"Item": nombre_item, "Ciudad": ciudad_item, "Categoría": categoria, "Precio_Unit_USD": st.session_state.usd_input, "Cantidad": multiplicador, "Total_USD": total_usd_item}])
-                    conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva_fila], ignore_index=True))
+                    df = conn.read(worksheet="Cotizaciones", ttl=0)
+                    nueva = pd.DataFrame([{"Item": n_item, "Ciudad": c_item, "Categoría": cat, "Precio_Unit_USD": st.session_state.usd_input, "Cantidad": mult, "Total_USD": tot_usd}])
+                    conn.update(worksheet="Cotizaciones", data=pd.concat([df, nueva], ignore_index=True))
                     st.success("✅ ¡Guardado!")
                     st.cache_data.clear()
                     st.rerun()
-                except: st.error("Error de conexión.")
+                except: st.error("Error conexión GSheets")
         st.markdown('</div>', unsafe_allow_html=True)
 
     try:
         df_base = conn.read(worksheet="Cotizaciones", ttl=0)
         if not df_base.empty:
-            st.markdown("### 📋 Simulador Interactiva")
+            st.markdown("### 📋 Simulador Interactivo de Cotizaciones")
             df_check = df_base.copy()
             df_check.insert(0, "Seleccionar", False)
             df_edit = st.data_editor(df_check, column_config={"Seleccionar": st.column_config.CheckboxColumn(required=True)}, disabled=["Item", "Ciudad", "Categoría", "Precio_Unit_USD", "Cantidad", "Total_USD"], hide_index=True, use_container_width=True)
             t_sel = df_edit[df_edit["Seleccionar"] == True]["Total_USD"].sum()
             t_gen = df_base["Total_USD"].sum()
             st.write("---")
-            col_m1, col_m2 = st.columns(2)
-            with col_m1: st.markdown(f'<div class="selected-box">🛒 SELECCIONADO<br>{format_money(t_sel)}</div>', unsafe_allow_html=True)
-            with col_m2: st.metric("PRESUPUESTO GENERAL TOTAL", format_money(t_gen))
-    except: st.info("Aún no hay datos guardados.")
+            col_met1, col_met2 = st.columns(2)
+            with col_met1: st.markdown(f'<div class="selected-box">🛒 SELECCIONADO<br>{format_money(t_sel)}</div>', unsafe_allow_html=True)
+            with col_met2: st.metric("PRESUPUESTO GENERAL TOTAL", format_money(t_gen))
+    except: st.info("Sin datos guardados.")
