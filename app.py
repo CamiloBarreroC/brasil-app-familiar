@@ -29,7 +29,8 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab"] {{ color: #ffffff !important; font-weight: bold; }}
     .stTabs [aria-selected="true"] {{ background-color: #009c3b !important; color: white !important; border-radius: 7px; }}
     .stTable {{ background-color: #1a1c24; color: white !important; border-radius: 10px; }}
-    .stButton>button {{ background-color: #009c3b; color: white; border-radius: 10px; border: none; font-weight: bold; width: 100%; }}
+    .stButton>button {{ background-color: #009c3b; color: white; border-radius: 10px; border: none; font-weight: bold; width: 100%; height: 3em; }}
+    .input-container {{ background-color: #1a1c24; padding: 20px; border-radius: 15px; border: 2px solid #009c3b; margin-bottom: 25px; }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -60,34 +61,29 @@ with tab1:
     horario_vuelo = st.radio("¿A qué hora aterrizamos?", ["Mañana", "Tarde/Noche"], horizontal=True)
     
     if "Mañana" in horario_vuelo:
-        p1, p2 = "⚽ Aterrizaje y MUSEO DEL FÚTBOL (Pacaembú).", "🛍️ Compras en Oscar Freire (Jardins) e historia en SP."
+        p1, p2 = "⚽ MUSEO DEL FÚTBOL.", "🛍️ Compras en Jardins."
     else:
-        p1, p2 = "🏨 Llegada al hotel y descanso del vuelo.", "⚽ Mañana: MUSEO DEL FÚTBOL. Tarde: Compras y Mercado."
+        p1, p2 = "🏨 Llegada y descanso.", "⚽ Mañana: MUSEO DEL FÚTBOL. Tarde: Compras."
 
     it_data = [
         {"Fecha": "26 Dic", "Trayecto": "Llegada SP", "Hospedaje": "São Paulo", "Plan": p1},
         {"Fecha": "27 Dic", "Trayecto": "Estancia SP", "Hospedaje": "São Paulo", "Plan": p2},
-        {"Fecha": "28 Dic", "Trayecto": "SP -> Balneário", "Hospedaje": "Balneário Camboriú", "Plan": "Viaje al sur (6h). Cena en la 'Dubai' brasileña."},
-        {"Fecha": "29 Dic", "Trayecto": "BC -> Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 DÍA 1 PARQUE: Adrenalina pura."},
-        {"Fecha": "30 Dic", "Trayecto": "BC -> Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 DÍA 2 PARQUE: Shows y repetición."},
-        {"Fecha": "31 Dic", "Trayecto": "Año Nuevo (BC)", "Hospedaje": "Balneário Camboriú", "Plan": "Reveillón de gala en la playa."},
-        {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida 11 AM (3h). Cena y descanso."},
-        {"Fecha": "02 Ene", "Trayecto": "Curitiba -> Santos", "Hospedaje": "Santos", "Plan": "🌿 Jardín Botánico y bajada a Santos (5h)."},
+        {"Fecha": "28 Dic", "Trayecto": "SP -> Balneário", "Hospedaje": "Balneário Camboriú", "Plan": "Viaje al sur (6h)."},
+        {"Fecha": "29-30 Dic", "Trayecto": "Beto Carrero", "Hospedaje": "Balneário Camboriú", "Plan": "🎢 2 Días de Parque."},
+        {"Fecha": "31 Dic", "Trayecto": "Año Nuevo (BC)", "Hospedaje": "Balneário Camboriú", "Plan": "Reveillón en la playa."},
+        {"Fecha": "01 Ene", "Trayecto": "BC -> Curitiba", "Hospedaje": "Curitiba", "Plan": "Salida 11 AM (3h)."},
+        {"Fecha": "02 Ene", "Trayecto": "Curitiba -> Santos", "Hospedaje": "Santos", "Plan": "🌿 Jardín Botánico y Santos."},
         {"Fecha": "03 Ene", "Trayecto": "Santos -> Paraty", "Hospedaje": "Paraty", "Plan": "⚽ Vila Belmiro y ruta a Paraty."},
-        {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico y fotos coloniales."},
-        {"Fecha": "05 Ene", "Trayecto": "Paraty -> Río", "Hospedaje": "Río de Janeiro", "Plan": "Llegada a Copacabana."},
-        {"Fecha": "06 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "⚽ Maracanã y AquaRio."},
-        {"Fecha": "07 Ene", "Trayecto": "Estancia Río", "Hospedaje": "Río de Janeiro", "Plan": "Cristo Redentor y Pan de Azúcar."},
-        {"Fecha": "08 Ene", "Trayecto": "Río -> Petrópolis", "Hospedaje": "Petrópolis", "Plan": "🏰 Subida Imperial (2h). Tour de Palacios."},
-        {"Fecha": "09 Ene", "Trayecto": "Petrópolis -> BH", "Hospedaje": "Belo Horizonte", "Plan": "Viaje a Minas (5h). Cena minera."},
-        {"Fecha": "10 Ene", "Trayecto": "Estancia BH", "Hospedaje": "Belo Horizonte", "Plan": "⚽ Mineirão y Mercado Central."},
-        {"Fecha": "11 Ene", "Trayecto": "Ouro Preto", "Hospedaje": "Belo Horizonte", "Plan": "Historia barroca y comida típica."},
-        {"Fecha": "12 Ene", "Trayecto": "BH -> São Paulo", "Hospedaje": "São Paulo", "Plan": "Regreso a base final y cena despedida."},
-        {"Fecha": "13 Ene", "Trayecto": "Vuelo Regreso", "Hospedaje": "---", "Plan": "Traslado al aeropuerto."}
+        {"Fecha": "04 Ene", "Trayecto": "Estancia Paraty", "Hospedaje": "Paraty", "Plan": "Centro Histórico."},
+        {"Fecha": "05-07 Ene", "Trayecto": "Río de Janeiro", "Hospedaje": "Río de Janeiro", "Plan": "Copacabana, Cristo y Maracanã."},
+        {"Fecha": "08 Ene", "Trayecto": "Río -> Petrópolis", "Hospedaje": "Petrópolis", "Plan": "🏰 Subida Imperial."},
+        {"Fecha": "09-11 Ene", "Trayecto": "Minas Gerais", "Hospedaje": "Belo Horizonte", "Plan": "⚽ Mineirão y Ouro Preto."},
+        {"Fecha": "12 Ene", "Trayecto": "BH -> São Paulo", "Hospedaje": "São Paulo", "Plan": "Cena de despedida."},
+        {"Fecha": "13 Ene", "Trayecto": "Vuelo Regreso", "Hospedaje": "---", "Plan": "Aeropuerto."}
     ]
     st.table(pd.DataFrame(it_data))
 
-# --- TAB 2: RECORRIDO ---
+# --- TAB 2: RECORRIDO (MAPA) ---
 with tab_map:
     st.header("📍 Trazado Maestro de la Ruta")
     url_mapa = "https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/recorrido_maestro_brasil.png"
@@ -121,43 +117,67 @@ with tab3:
 
 # --- TAB 5: LOS CONSENTIDOS ---
 with tab4:
-    st.header("🥂 Los Consentidos: Estilo, Historia y Sabor")
-    st.write("Para Amparo, Jime, Diana y Giorgio: El placer de viajar.")
-    
+    st.header("🥂 Los Consentidos: Estilo e Historia")
     col_c1, col_c2 = st.columns(2)
-    
     with col_c1:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/museu_imperial_petropolis.jpg", caption="🏰 Petrópolis: Historia Imperial")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="☕ Minas: Sabor Inolvidable")
-        
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/museu_imperial_petropolis.jpg", caption="🏰 Petrópolis")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="☕ Minas Gerais")
     with col_c2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardim_botanico_curitiba.jpg", caption="🌿 Curitiba: Paz y Naturaleza")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="🛍️ São Paulo: Shopping & Sofisticación")
-    
-    st.write("---")
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="⛪ Ouro Preto: Cultura en cada rincón", use_container_width=True)
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardim_botanico_curitiba.jpg", caption="🌿 Curitiba")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="🛍️ São Paulo")
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="⛪ Ouro Preto", use_container_width=True)
 
-# --- TAB 6: PRESUPUESTO ---
+# --- TAB 6: PRESUPUESTO (ACTUALIZADO CON CANTIDADES) ---
 with tab5:
     st.header("💰 Gestión de Gastos")
+    
     if 'usd_input' not in st.session_state: st.session_state.usd_input = 0.0
     if 'cop_input' not in st.session_state: st.session_state.cop_input = 0.0
+    
     def sync_to_usd(): st.session_state.usd_input = st.session_state.cop_input / usd_hoy
     def sync_to_cop(): st.session_state.cop_input = st.session_state.usd_input * usd_hoy
 
-    col_f1, col_f2 = st.columns(2)
-    nombre_item = col_f1.text_input("Ítem")
-    categoria = col_f2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques"])
-    cp1, cp2 = st.columns(2)
-    with cp1: st.number_input("COP", key="cop_input", on_change=sync_to_usd)
-    with cp2: st.number_input("USD", key="usd_input", on_change=sync_to_cop)
-    
-    if st.button("🚀 GUARDAR"):
-        try:
-            df = conn.read(worksheet="Cotizaciones", ttl=0)
-            nueva = pd.DataFrame([{"Item": nombre_item, "Categoría": categoria, "USD": st.session_state.usd_input}])
-            conn.update(worksheet="Cotizaciones", data=pd.concat([df, nueva], ignore_index=True))
-            st.success("¡Guardado!")
-            st.cache_data.clear()
-            st.rerun()
-        except: st.error("Error con la hoja de cálculo.")
+    st.subheader("➕ Agregar Gasto / Cotización")
+    with st.container():
+        st.markdown('<div class="input-container">', unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
+        nombre_item = col1.text_input("Ítem (Ej: Vuelo Avianca o Airbnb Río)")
+        categoria = col2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques"])
+        
+        cp1, cp2, cp3 = st.columns(3)
+        with cp1: st.number_input("Precio Unitario (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
+        with cp2: st.number_input("Precio Unitario (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
+        with cp3: num_personas = st.number_input("Cantidad / Personas", min_value=1, value=1, step=1)
+        
+        total_item_usd = st.session_state.usd_input * num_personas
+        st.markdown(f"**Total para este ítem:** {format_money(total_item_usd)}")
+        
+        if st.button("🚀 GUARDAR EN PRESUPUESTO"):
+            if nombre_item and st.session_state.usd_input > 0:
+                try:
+                    df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
+                except:
+                    df_actual = pd.DataFrame(columns=["Item", "Categoría", "USD_Unit", "Cant", "Total_USD"])
+                
+                nueva_fila = pd.DataFrame([{
+                    "Item": nombre_item, 
+                    "Categoría": categoria, 
+                    "USD_Unit": st.session_state.usd_input,
+                    "Cant": num_personas,
+                    "Total_USD": total_item_usd
+                }])
+                
+                conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva_fila], ignore_index=True))
+                st.success("✅ ¡Guardado!")
+                st.cache_data.clear()
+                st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    try:
+        df_mostrar = conn.read(worksheet="Cotizaciones", ttl=0)
+        if not df_mostrar.empty:
+            st.dataframe(df_mostrar, use_container_width=True)
+            total_viaje = df_mostrar["Total_USD"].sum()
+            st.metric("TOTAL ESTIMADO DEL VIAJE", format_money(total_viaje))
+    except:
+        st.info("Aún no hay datos guardados.")
