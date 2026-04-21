@@ -6,13 +6,15 @@ import requests
 # 1. Configuración de la página
 st.set_page_config(page_title="Misión Brasil 2026", page_icon="🇧🇷", layout="wide")
 
-# --- FUNCIÓN: TASAS DE CAMBIO ---
+# --- FUNCIÓN: TASAS DE CAMBIO (API REAL-TIME) ---
 @st.cache_data(ttl=3600)
 def obtener_tasas():
     try:
         response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
         data = response.json()
-        return data['rates']['COP'], data['rates']['COP'] / data['rates']['BRL']
+        usd_cop = data['rates']['COP']
+        usd_brl = data['rates']['BRL']
+        return usd_cop, usd_cop / usd_brl
     except:
         return 3950.0, 780.0
 
@@ -28,20 +30,23 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab-list"] {{ background-color: #1a1c24; border-radius: 10px; padding: 5px; gap: 10px; }}
     .stTabs [data-baseweb="tab"] {{ color: #ffffff !important; font-weight: bold; }}
     .stTabs [aria-selected="true"] {{ background-color: #009c3b !important; color: white !important; border-radius: 7px; }}
-    .stTable {{ background-color: #1a1c24; color: white !important; border-radius: 10px; }}
+    .stTable, [data-testid="stTable"] {{ background-color: #1a1c24; color: white !important; border-radius: 10px; }}
+    [data-testid="stTable"] td, [data-testid="stTable"] th {{ color: white !important; border-bottom: 1px solid #31333f; }}
+    section[data-testid="stSidebar"] {{ background-color: #000b1a; }}
     .stButton>button {{ background-color: #009c3b; color: white; border-radius: 10px; border: none; font-weight: bold; width: 100%; height: 3em; }}
     .input-container {{ background-color: #1a1c24; padding: 20px; border-radius: 15px; border: 2px solid #009c3b; margin-bottom: 25px; }}
     </style>
     """, unsafe_allow_html=True)
 
 # --- ENCABEZADO ---
-st.markdown("<h1>🚀 MISIÓN BRASIL 2026</h1>", unsafe_allow_html=True)
+st.markdown("<h1>🚀 MISIÓN BRASIL 2026: EL SUEÑO FAMILIAR</h1>", unsafe_allow_html=True)
 st.write("---")
 
-# --- SIDEBAR ---
-st.sidebar.header("💰 Finanzas")
+# --- SIDEBAR (FINANZAS) ---
+st.sidebar.header("💰 Finanzas en Vivo")
 st.sidebar.metric("Dólar (USD)", f"${usd_hoy:,.0f} COP")
 st.sidebar.metric("Real (BRL)", f"${brl_hoy:,.0f} COP")
+st.sidebar.write("---")
 moneda_v = st.sidebar.radio("Ver presupuesto en:", ["COP", "USD", "BRL"])
 
 def format_money(usd_val):
@@ -54,16 +59,21 @@ tab1, tab_map, tab2, tab3, tab4, tab5 = st.tabs([
     "🗺️ RUTA 19 DÍAS", "📍 RECORRIDO", "⚽ MATI Y ABUELO", "🎢 BIANCA Y MATI", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
 ])
 
-# --- TAB 1: RUTA ---
+# --- PESTAÑA 1: ITINERARIO ---
 with tab1:
+    # IMAGEN DE INICIO
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", use_container_width=True)
+    
     st.markdown("### ✈️ Configuración de Llegada (26 Dic)")
-    horario_vuelo = st.radio("¿A qué hora aterrizamos?", ["Mañana", "Tarde/Noche"], horizontal=True)
+    horario_vuelo = st.radio(
+        "¿A qué hora aterrizamos en São Paulo?",
+        ["Mañana", "Tarde/Noche"], index=0, horizontal=True
+    )
     
     if "Mañana" in horario_vuelo:
-        p1, p2 = "⚽ MUSEO DEL FÚTBOL.", "🛍️ Compras en Jardins."
+        p1, p2 = "⚽ MUSEO DEL FÚTBOL (Pacaembú).", "🛍️ Compras en Jardins e historia en SP."
     else:
-        p1, p2 = "🏨 Llegada y descanso.", "⚽ Mañana: MUSEO DEL FÚTBOL. Tarde: Compras."
+        p1, p2 = "🏨 Llegada y descanso del vuelo.", "⚽ Mañana: MUSEO DEL FÚTBOL. Tarde: Compras."
 
     it_data = [
         {"Fecha": "26 Dic", "Trayecto": "Llegada SP", "Hospedaje": "São Paulo", "Plan": p1},
@@ -83,17 +93,17 @@ with tab1:
     ]
     st.table(pd.DataFrame(it_data))
 
-# --- TAB 2: RECORRIDO (MAPA) ---
+# --- PESTAÑA: RECORRIDO (MAPA CENTRADO) ---
 with tab_map:
     st.header("📍 Trazado Maestro de la Ruta")
     url_mapa = "https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/recorrido_maestro_brasil.png"
     col_map1, col_map2, col_map3 = st.columns([1, 5, 1])
     with col_map2:
-        st.image(url_mapa, caption="Circuito: SP - Sur - Río - Petrópolis - Minas", width=800)
+        st.image(url_mapa, caption="Circuito oficial SP-Sur-Río-Petrópolis-Minas", width=800)
 
-# --- TAB 3: MATI Y ABUELO ---
+# --- PESTAÑA 2: MATI Y EL ABUELO ---
 with tab2:
-    st.header("🏟️ Templos Sagrados")
+    st.header("🏟️ Ruta de los Templos Sagrados")
     c1, c2 = st.columns(2)
     with c1: 
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/maracana.jpg", caption="Maracanã")
@@ -102,7 +112,7 @@ with tab2:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/pacaembu.jpg", caption="Museo del Fútbol")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/mineirao.jpg", caption="Mineirão")
 
-# --- TAB 4: BIANCA Y MATI ---
+# --- PESTAÑA 3: BIANCA Y MATI ---
 with tab3:
     st.header("🎢 Bianca y Mati: Adrenalina")
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/beto_carrero_portal.jpg", use_container_width=True)
@@ -115,7 +125,7 @@ with tab3:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/hot_wheels_mati.jpg", caption="Hot Wheels Show")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/star_mountain_loop.jpg", caption="Star Mountain")
 
-# --- TAB 5: LOS CONSENTIDOS ---
+# --- PESTAÑA 4: LOS CONSENTIDOS ---
 with tab4:
     st.header("🥂 Los Consentidos: Estilo e Historia")
     col_c1, col_c2 = st.columns(2)
@@ -127,9 +137,9 @@ with tab4:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="🛍️ São Paulo")
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/iglesia_ouro_preto.jpg", caption="⛪ Ouro Preto", use_container_width=True)
 
-# --- TAB 6: PRESUPUESTO (ACTUALIZADO CON CANTIDADES) ---
+# --- PESTAÑA 5: PRESUPUESTO (DINÁMICO) ---
 with tab5:
-    st.header("💰 Gestión de Gastos")
+    st.header("💰 Gestión de Presupuesto")
     
     if 'usd_input' not in st.session_state: st.session_state.usd_input = 0.0
     if 'cop_input' not in st.session_state: st.session_state.cop_input = 0.0
@@ -137,38 +147,38 @@ with tab5:
     def sync_to_usd(): st.session_state.usd_input = st.session_state.cop_input / usd_hoy
     def sync_to_cop(): st.session_state.cop_input = st.session_state.usd_input * usd_hoy
 
-    st.subheader("➕ Agregar Gasto / Cotización")
+    st.subheader("➕ Agregar Ítem al Presupuesto")
     with st.container():
         st.markdown('<div class="input-container">', unsafe_allow_html=True)
         col1, col2 = st.columns(2)
-        nombre_item = col1.text_input("Ítem (Ej: Vuelo Avianca o Airbnb Río)")
+        nombre_item = col1.text_input("¿Qué estamos cotizando? (Ej: Vuelo, Airbnb, Entradas)")
         categoria = col2.selectbox("Categoría", ["Vuelos", "Carro", "Hospedaje", "Comida", "Parques"])
         
         cp1, cp2, cp3 = st.columns(3)
-        with cp1: st.number_input("Precio Unitario (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
-        with cp2: st.number_input("Precio Unitario (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
-        with cp3: num_personas = st.number_input("Cantidad / Personas", min_value=1, value=1, step=1)
+        with cp1: st.number_input("Precio base (COP)", min_value=0.0, key="cop_input", on_change=sync_to_usd, step=50000.0)
+        with cp2: st.number_input("Precio base (USD)", min_value=0.0, key="usd_input", on_change=sync_to_cop, step=10.0)
+        with cp3: multiplicador = st.number_input("Cantidad (Personas, Habitaciones, etc.)", min_value=1, value=1, step=1)
         
-        total_item_usd = st.session_state.usd_input * num_personas
-        st.markdown(f"**Total para este ítem:** {format_money(total_item_usd)}")
+        total_usd_item = st.session_state.usd_input * multiplicador
+        st.markdown(f"### Total de este ítem: {format_money(total_usd_item)}")
         
         if st.button("🚀 GUARDAR EN PRESUPUESTO"):
             if nombre_item and st.session_state.usd_input > 0:
                 try:
                     df_actual = conn.read(worksheet="Cotizaciones", ttl=0)
                 except:
-                    df_actual = pd.DataFrame(columns=["Item", "Categoría", "USD_Unit", "Cant", "Total_USD"])
+                    df_actual = pd.DataFrame(columns=["Item", "Categoría", "Precio_Unit_USD", "Cantidad", "Total_USD"])
                 
                 nueva_fila = pd.DataFrame([{
                     "Item": nombre_item, 
                     "Categoría": categoria, 
-                    "USD_Unit": st.session_state.usd_input,
-                    "Cant": num_personas,
-                    "Total_USD": total_item_usd
+                    "Precio_Unit_USD": st.session_state.usd_input,
+                    "Cantidad": multiplicador,
+                    "Total_USD": total_usd_item
                 }])
                 
                 conn.update(worksheet="Cotizaciones", data=pd.concat([df_actual, nueva_fila], ignore_index=True))
-                st.success("✅ ¡Guardado!")
+                st.success("✅ ¡Guardado exitosamente!")
                 st.cache_data.clear()
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -177,7 +187,6 @@ with tab5:
         df_mostrar = conn.read(worksheet="Cotizaciones", ttl=0)
         if not df_mostrar.empty:
             st.dataframe(df_mostrar, use_container_width=True)
-            total_viaje = df_mostrar["Total_USD"].sum()
-            st.metric("TOTAL ESTIMADO DEL VIAJE", format_money(total_viaje))
+            st.metric("TOTAL ESTIMADO DEL VIAJE", format_money(df_mostrar["Total_USD"].sum()))
     except:
-        st.info("Aún no hay datos guardados.")
+        st.info("Aún no hay datos guardados en el presupuesto.")
