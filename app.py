@@ -43,7 +43,6 @@ st.markdown(f"""
     .input-container {{ background-color: #1a1c24; padding: 25px; border-radius: 15px; border: 2px solid #009c3b; margin-bottom: 25px; box-shadow: 0px 4px 15px rgba(0, 156, 59, 0.2); }}
     .selected-box {{ background-color: #009c3b; padding: 20px; border-radius: 10px; color: white; text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); }}
     .metric-card {{ background-color: #1a1c24; border: 1px solid #31333f; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); }}
-    .highlight-text {{ color: #009c3b; font-weight: bold; }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -66,7 +65,7 @@ def format_money(val, moneda="USD"):
 
 # --- PESTAÑAS ---
 tab1, tab_map, tab2, tab3, tab4, tab5 = st.tabs([
-    "🗺️ GRAN ITINERARIO", "📍 EL MAPA", "⚽ PASIÓN Y GLORIA", "🎢 ADRENALINA B&M", "🥂 HISTORIA Y RELAX", "💰 PRESUPUESTO"
+    "🗺️ GRAN ITINERARIO", "📍 EL MAPA", "⚽ PASIÓN Y GLORIA", "🎢 AVENTURAS B&M", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
 ])
 
 # --- PESTAÑA 1: ITINERARIO DETALLADO ---
@@ -150,28 +149,28 @@ with tab3:
 
 # --- PESTAÑA: LOS CONSENTIDOS ---
 with tab4:
-    st.header("🥂 Para los Adultos: El Sabor de la Buena Vida")
-    st.subheader("🌴 El Lujo de la Costa Brasileña")
-    st.markdown("Mientras los chicos gastan energía, nosotros disfrutaremos del paraíso. Nuestra base de Año Nuevo será **Balneário Camboriú**, conocida como la 'Dubai Brasileña' por sus rascacielos frente al mar.")
+    st.header("🥂 Los Consentidos: Amaro, Jime, Diana y Giorgio")
+    st.subheader("🌴 El Lujo y Relax que se Merecen")
+    st.markdown("Mientras los más jóvenes gastan energía, nuestros consentidos disfrutarán del paraíso a su propio ritmo. Nuestra base de Año Nuevo será **Balneário Camboriú**, conocida como la 'Dubai Brasileña', el lugar perfecto para caminar frente al mar y brindar por la vida sin afanes.")
     
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_camboriu_noche.jpg", caption="El imponente skyline de Balneário Camboriú.", use_container_width=True)
     
     col_b1, col_b2 = st.columns(2)
     with col_b1:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_rio_copacabana.jpg", caption="Las icónicas olas de piedra en Copacabana.")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/playa_rio_copacabana.jpg", caption="Las icónicas olas de piedra en Copacabana para una tarde de cócteles.")
     with col_b2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardin_orla_santos.jpg", caption="La Orla de Santos, récord Guinness al jardín de playa más grande.")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/jardin_orla_santos.jpg", caption="La Orla de Santos, récord Guinness al jardín de playa más grande del mundo.")
 
     st.write("---")
-    st.subheader("🍷 Historia, Oro y Gastronomía")
-    st.markdown("Nos adentraremos en el Brasil imperial y colonial. Desde los palacios de cristal de la familia real en **Petrópolis**, hasta el oro barroco de **Ouro Preto**, todo acompañado de un buen vino y la inigualable gastronomía de Minas Gerais.")
+    st.subheader("🍷 Historia, Oro y Buena Mesa")
+    st.markdown("Un recorrido pensado para el deleite absoluto. Visitaremos los palacios de cristal de la familia real en **Petrópolis**, sentiremos la mística del oro en **Ouro Preto**, y por supuesto, todo estará acompañado de un excelente vino y la inigualable gastronomía de Minas Gerais.")
     
     col_h1, col_h2 = st.columns(2)
     with col_h1:
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/museu_imperial_petropolis.jpg", caption="Palacio Imperial en Petrópolis.")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/paraty_colonial.jpg", caption="El encanto detenido en el tiempo de Paraty.")
     with col_h2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="Pão de Queijo y manjares de Minas Gerais.")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/gastronomia_mineira.jpg", caption="El auténtico Pão de Queijo y los manjares de Minas Gerais.")
         st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/oscar_freire_shopping.jpg", caption="Tarde de vitrinas exclusivas en São Paulo.")
     
     col_h3, col_h4 = st.columns(2)
