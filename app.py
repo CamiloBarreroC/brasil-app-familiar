@@ -65,14 +65,14 @@ def format_money(val, moneda="USD"):
 
 # --- PESTAÑAS ---
 tab1, tab_map, tab2, tab3, tab4, tab5 = st.tabs([
-    "🗺️ GRAN ITINERARIO", "📍 EL MAPA", "⚽ PASIÓN Y GLORIA", "🎢 AVENTURAS B&M", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
+    "🗺️ GRAN ITINERARIO", "📍 EL MAPA", "⚽ PASIÓN Y GLORIA", "🎢 LA AVENTURA B&M", "🥂 LOS CONSENTIDOS", "💰 PRESUPUESTO"
 ])
 
 # --- PESTAÑA 1: ITINERARIO DETALLADO ---
 with tab1:
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/rio.jpg", use_container_width=True, caption="Río de Janeiro nos espera con los brazos abiertos.")
     st.markdown("### 📅 La Ruta de Nuestra Vida")
-    st.markdown("Cada día está diseñado para mezclar la **adrenalina** que buscan los más jóvenes, la **pasión por el fútbol** para los hinchas de la casa, y el **descanso y lujo** que todos merecemos.")
+    st.markdown("Cada día está diseñado para mezclar la **diversión** que buscan los más jóvenes, la **pasión por el fútbol** para los hinchas de la casa, y el **descanso y lujo** que todos merecemos.")
     
     horario_vuelo = st.radio("⏳ Simular llegada a São Paulo:", ["Vuelo de Mañana", "Vuelo de Tarde/Noche"], index=0, horizontal=True)
     
@@ -87,7 +87,7 @@ with tab1:
         {"Día": "1 (26 Dic)", "Destino": "São Paulo 🏙️", "La Experiencia": p1},
         {"Día": "2 (27 Dic)", "Destino": "São Paulo 🏙️", "La Experiencia": p2},
         {"Día": "3 (28 Dic)", "Destino": "Camboriú 🏖️", "La Experiencia": "🚗 Roadtrip al sur (6h). Atravesamos paisajes hasta llegar a la espectacular 'Dubai brasileña'. Noche de playa."},
-        {"Día": "4 y 5 (29-30 Dic)", "Destino": "Beto Carrero 🎢", "La Experiencia": "🔥 2 DÍAS DE LOCURA: Gritos en la FireWhip, vértigo en la Big Tower y el show de Hot Wheels para Mati y Bianca."},
+        {"Día": "4 y 5 (29-30 Dic)", "Destino": "Beto Carrero 🎢", "La Experiencia": "🔥 2 DÍAS DE PARQUES: Montañas rusas asombrosas y el show de Hot Wheels para Mati y Bianca."},
         {"Día": "6 (31 Dic)", "Destino": "Camboriú 🎆", "La Experiencia": "🥂 REVEILLÓN: Despedimos el año en la playa, todos de blanco, viendo los fuegos artificiales iluminar los rascacielos."},
         {"Día": "7 (01 Ene)", "Destino": "Curitiba 🌿", "La Experiencia": "Recuperación de año nuevo. Viaje corto (3h) hacia la capital ecológica. Tarde de paz en el Jardín Botánico de cristal."},
         {"Día": "8 (02 Ene)", "Destino": "Santos ⚓", "La Experiencia": "Descenso panorámico por la sierra del mar hacia la costa. Caminata por los jardines de playa más grandes del mundo."},
@@ -129,23 +129,23 @@ with tab2:
 
 # --- PESTAÑA: AVENTURAS B&M ---
 with tab3:
-    st.header("🎢 Zona Extrema: El Territorio de Bianca y Mati")
-    st.markdown("### 🎡 Beto Carrero World: El parque más grande de Latinoamérica")
-    st.markdown("Dos días completos de pura adrenalina. Montañas rusas invertidas, caídas libres y espectáculos de primer nivel. **¡Prohibido aburrirse!**")
+    st.header("🎢 La Gran Aventura para Bianca y Mati")
+    st.markdown("### 🎡 Beto Carrero World: Diversión a lo Grande")
+    st.markdown("Dos días completos de pura fantasía y diversión. Entre asombrosas montañas rusas, shows de velocidad y mundos de colores, esta será una parada que nunca olvidarán. **¡Preparados para la magia!**")
     st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/beto_carrero_portal.jpg", use_container_width=True)
     
     col_p1, col_p2 = st.columns(2)
     with col_p1:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/firewhip_bianca.jpg", caption="FireWhip: Montaña rusa invertida a 100km/h.")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/big_tower_caida.jpg", caption="Big Tower: 100 metros de caída libre. ¿Se atreven?")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/firewhip_bianca.jpg", caption="FireWhip: Volando sobre la pista.")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/big_tower_caida.jpg", caption="Big Tower: Para tocar las nubes y bajar en segundos.")
     with col_p2:
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/hot_wheels_mati.jpg", caption="Hot Wheels Epic Show: Derrapes y fuego en vivo.")
-        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/star_mountain_loop.jpg", caption="Star Mountain: Doble loop para marear hasta a los más fuertes.")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/hot_wheels_mati.jpg", caption="Hot Wheels Epic Show: Autos increíbles a toda velocidad.")
+        st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/star_mountain_loop.jpg", caption="Star Mountain: Vueltas y giros de pura emoción.")
     
     st.write("---")
-    st.subheader("🦈 Río de Janeiro: Misterios del Océano")
-    st.markdown("En el corazón del puerto de Río, caminaremos bajo el agua en el **AquaRio**, rodeados de tiburones, mantarrayas y miles de peces tropicales.")
-    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/aquario_rio.jpg", caption="AquaRio: El mayor acuario marino de Sudamérica.", use_container_width=True)
+    st.subheader("🦈 Río de Janeiro: El Mundo Submarino")
+    st.markdown("En el corazón de Río, viviremos la experiencia de caminar bajo el agua en el **AquaRio**. Nos rodearemos de mantarrayas, peces tropicales y asombrosos tiburones. ¡Una ventana mágica al fondo del mar!")
+    st.image("https://raw.githubusercontent.com/CamiloBarreroC/brasil-app-familiar/main/img/aquario_rio.jpg", caption="AquaRio: El acuario marino más espectacular de Sudamérica.", use_container_width=True)
 
 # --- PESTAÑA: LOS CONSENTIDOS ---
 with tab4:
